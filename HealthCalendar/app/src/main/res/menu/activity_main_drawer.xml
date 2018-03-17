@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/home_icon_silhouette"
+            android:title="Главная" />
+        <item
+            android:id="@+id/nav_calendar"
+            android:icon="@drawable/calendar"
+            android:title="Календарь" />
+        <item
+            android:id="@+id/nav_doctors"
+            android:icon="@drawable/doctor"
+            android:title="Врачи" />
+        <item
+            android:id="@+id/nav_meds"
+            android:icon="@drawable/tablet"
+            android:title="Лекарства" />
+        <item
+            android:id="@+id/nav_exam"
+            android:icon="@drawable/lungs_radiography"
+            android:title="Обследования" />
+        <item
+            android:id="@+id/nav_journal"
+            android:icon="@drawable/newspaper"
+            android:title="Журнал самочувствия" />
+        <item
+            android:id="@+id/nav_manage"
+            android:icon="@drawable/settings"
+            android:title="Настройки" />
+    </group>
+
+</menu>
