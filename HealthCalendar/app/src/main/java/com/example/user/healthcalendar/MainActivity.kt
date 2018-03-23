@@ -24,7 +24,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     val fjournal = FragmentJournal()
     val fmanage = FragmentManage()
     val fhome = FragmentHome()
-    //
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
