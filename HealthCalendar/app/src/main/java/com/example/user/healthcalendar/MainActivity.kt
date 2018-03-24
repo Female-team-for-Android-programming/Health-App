@@ -40,6 +40,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
 
+        supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.container, fhome)
+                .commit()
+        
         nav_view.setNavigationItemSelectedListener(this)
 
         //var fdoctors : FragmentDoctors = FragmentDoctors()
