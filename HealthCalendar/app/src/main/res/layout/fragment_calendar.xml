@@ -12,4 +12,4 @@
         android:layout_height="wrap_content" />
 </FrameLayout>
 
-    <!--android:text="This is the calendar fragment"-->
+    <!--android:text="This is ic_menu_calendarndar fragment"-->

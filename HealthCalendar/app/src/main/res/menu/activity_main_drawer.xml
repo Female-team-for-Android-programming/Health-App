@@ -6,31 +6,31 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
-            android:icon="@drawable/home_icon_silhouette"
+            android:icon="@drawable/ic_menu_home"
             android:title="Главная" />
         <item
             android:id="@+id/nav_calendar"
-            android:icon="@drawable/calendar"
+            android:icon="@drawable/ic_menu_calendar"
             android:title="Календарь" />
         <item
             android:id="@+id/nav_doctors"
-            android:icon="@drawable/doctor"
+            android:icon="@drawable/ic_menu_doctors"
             android:title="Врачи" />
         <item
             android:id="@+id/nav_meds"
-            android:icon="@drawable/tablet"
+            android:icon="@drawable/ic_menu_meds"
             android:title="Лекарства" />
         <item
             android:id="@+id/nav_exam"
-            android:icon="@drawable/lungs_radiography"
+            android:icon="@drawable/ic_menu_exam"
             android:title="Обследования" />
         <item
             android:id="@+id/nav_journal"
-            android:icon="@drawable/newspaper"
+            android:icon="@drawable/ic_menu_journal"
             android:title="Журнал самочувствия" />
         <item
             android:id="@+id/nav_manage"
-            android:icon="@drawable/settings"
+            android:icon="@drawable/ic_menu_settings"
             android:title="Настройки" />
     </group>
 
