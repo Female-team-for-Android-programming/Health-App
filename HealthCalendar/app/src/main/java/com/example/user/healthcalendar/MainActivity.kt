@@ -16,7 +16,6 @@ import kotlinx.android.synthetic.main.app_bar_main.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-
     val fcalendar = FragmentCalendar()
     val fdoctors = FragmentDoctors()
     val fmeds = FragmentMeds()
@@ -30,24 +29,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        fab.setOnClickListener { view ->
+        /*fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
-        }
+        }*/
 
         val toggle = ActionBarDrawerToggle(
                 this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
 
-        supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.container, fhome)
-                .commit()
+        supportFragmentManager.beginTransaction().replace(R.id.container, fhome).commit()
         
         nav_view.setNavigationItemSelectedListener(this)
-
-        //var fdoctors : FragmentDoctors = FragmentDoctors()
 
     }
 
