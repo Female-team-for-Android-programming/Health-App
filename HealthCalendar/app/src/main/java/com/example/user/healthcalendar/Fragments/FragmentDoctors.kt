@@ -1,6 +1,7 @@
 package com.example.user.healthcalendar.Fragments
 
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
@@ -10,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.example.user.healthcalendar.EditDoctorActivity
 
 import com.example.user.healthcalendar.R
 import kotlinx.android.synthetic.main.fragment_doctors.*
@@ -43,12 +45,19 @@ class FragmentDoctors : Fragment() {
         // Inflate the layout for this fragment
 
         val view : View = inflater!!.inflate(R.layout.fragment_doctors, container, false)
-        val fab : FloatingActionButton = view.findViewById(R.id.fab_doctors)
+        val fab : FloatingActionButton = view.findViewById<FloatingActionButton>(R.id.fab_doctors)
         fab.setOnClickListener(View.OnClickListener {
-            Toast.makeText(activity.applicationContext, "Action for Doctors Fragment", Toast.LENGTH_SHORT).show()
+
+            goToEditDoctorActivity()
+            /*Toast.makeText(activity.applicationContext, "Action for Doctors Fragment", Toast.LENGTH_SHORT).show()*/
         })
 
         return view
+    }
+
+    fun goToEditDoctorActivity() {
+        val intent : Intent = Intent(activity, EditDoctorActivity::class.java)
+        startActivity(intent)
     }
 
     // TODO: Rename method, update argument and hook method into UI event
