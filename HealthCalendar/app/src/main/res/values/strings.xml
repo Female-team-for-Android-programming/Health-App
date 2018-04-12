@@ -6,5 +6,54 @@
 
     <string name="action_settings">Settings</string>
 
+    <string-array name="doctors_specialties">
+        <item>Акушер-гинеколог</item>
+        <item>Аллерголог</item>
+        <item>Андролог</item>
+        <item>Венеролог</item>
+        <item>Ветеринар</item>
+        <item>Вирусолог</item>
+        <item>Гастроэнтеролог</item>
+        <item>Гематолог</item>
+        <item>Генетик</item>
+        <item>Гепатолог</item>
+        <item>Гериатр</item>
+        <item>Гинеколог</item>
+        <item>Дерматолог</item>
+        <item>Диагност</item>
+        <item>Диетолог</item>
+        <item>Иммунолог</item>
+        <item>Инфекционист</item>
+        <item>Кардиолог</item>
+        <item>Кардиохирург</item>
+        <item>Логопед</item>
+        <item>Нарколог</item>
+        <item>Невролог</item>
+        <item>Нейрохирург</item>
+        <item>Нефролог</item>
+        <item>Онколог</item>
+        <item>Ортодонт</item>
+        <item>Ортопед</item>
+        <item>Отоларинголог</item>
+        <item>Офтальмолог</item>
+        <item>Педиатр</item>
+        <item>Пластический хирург</item>
+        <item>Проктолог</item>
+        <item>Психиатр</item>
+        <item>Психотерапевт</item>
+        <item>Пульмонолог</item>
+        <item>Ревматолог</item>
+        <item>Сомнолог</item>
+        <item>Стоматолог</item>
+        <item>Сурдолог</item>
+        <item>Терапевт</item>
+        <item>Токсиколог</item>
+        <item>Травматолог</item>
+        <item>Трансплантолог</item>
+        <item>Уролог</item>
+        <item>Физиотерапевт</item>
+        <item>Хирург</item>
+        <item>Эндокринолог</item>
+    </string-array>
 
 </resources>
