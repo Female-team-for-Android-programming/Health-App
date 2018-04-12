@@ -10,18 +10,16 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity">
-    <!-- vertical ScrollView to make all the items or views scrollable -->
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none">
-        <!-- LinearLayout Inside ScrollView -->
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
-            <!-- create a Linear Layout with horizontal orientation and weightSum property -->
 
             <LinearLayout
                 android:id="@+id/firstLayout"
@@ -30,8 +28,6 @@
                 android:layout_marginTop="20dp"
                 android:orientation="horizontal"
                 android:weightSum="2">
-
-                <!-- place one TextView and one EditText inside layout using weight property -->
 
                 <TextView
                     android:layout_width="0dp"
@@ -57,7 +53,7 @@
                     android:singleLine="true"
                     android:textColor="#000000" />
             </LinearLayout>
-            <!-- create a Linear Layout with horizontal orientation and weightSum property -->
+
 
             <LinearLayout
                 android:id="@+id/secondLayout"
@@ -66,8 +62,6 @@
                 android:layout_marginTop="20dp"
                 android:orientation="horizontal"
                 android:weightSum="2">
-
-                <!-- place one TextView and one EditText inside layout using weight property -->
 
                 <TextView
                     android:layout_width="0dp"
@@ -80,7 +74,7 @@
                     android:textColor="#000000" />
 
                 <EditText
-                    android:id="@+id/lastName"
+                    android:id="@+id/name"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:layout_marginLeft="10dp"
@@ -92,7 +86,7 @@
                     android:singleLine="true"
                     android:textColor="#008000" />
             </LinearLayout>
-            <!-- create a Linear Layout with horizontal orientation and weightSum property -->
+
 
             <LinearLayout
                 android:id="@+id/thirdLayout"
@@ -101,8 +95,6 @@
                 android:layout_marginTop="20dp"
                 android:orientation="horizontal"
                 android:weightSum="2">
-
-                <!-- place one TextView and one EditText inside layout using weight property -->
 
                 <TextView
                     android:layout_width="0dp"
@@ -115,7 +107,7 @@
                     android:textColor="#000000" />
 
                 <EditText
-                    android:id="@+id/address"
+                    android:id="@+id/surname"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:layout_marginLeft="10dp"
@@ -127,7 +119,7 @@
                     android:singleLine="true"
                     android:textColor="#000000" />
             </LinearLayout>
-            <!-- create a Linear Layout with horizontal orientation and weightSum property -->
+
 
             <LinearLayout
                 android:id="@+id/fourthLayout"
@@ -136,8 +128,6 @@
                 android:layout_marginTop="20dp"
                 android:orientation="horizontal"
                 android:weightSum="2">
-
-                <!-- place one TextView and one EditText inside layout using weight property -->
 
                 <TextView
                     android:layout_width="0dp"
@@ -150,7 +140,7 @@
                     android:textColor="#000000" />
 
                 <EditText
-                    android:id="@+id/city"
+                    android:id="@+id/fathersName"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:layout_marginLeft="10dp"
@@ -162,7 +152,7 @@
                     android:singleLine="true"
                     android:textColor="#000000" />
             </LinearLayout>
-            <!-- create a Linear Layout with horizontal orientation and weightSum property -->
+
 
             <LinearLayout
                 android:id="@+id/fifthLayout"
@@ -171,8 +161,6 @@
                 android:layout_marginTop="20dp"
                 android:orientation="horizontal"
                 android:weightSum="2">
-
-                <!-- place one TextView and one EditText inside layout using weight property -->
 
                 <TextView
                     android:layout_width="0dp"
@@ -185,7 +173,7 @@
                     android:textColor="#000000" />
 
                 <EditText
-                    android:id="@+id/state"
+                    android:id="@+id/address"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:layout_marginLeft="10dp"
@@ -197,7 +185,7 @@
                     android:singleLine="true"
                     android:textColor="#000000" />
             </LinearLayout>
-            <!-- create a Linear Layout with horizontal orientation and weightSum property -->
+
 
             <LinearLayout
                 android:id="@+id/sixthLayout"
@@ -206,8 +194,6 @@
                 android:layout_marginTop="20dp"
                 android:orientation="horizontal"
                 android:weightSum="2">
-
-                <!-- place one TextView and one EditText inside layout using weight property -->
 
                 <TextView
                     android:layout_width="0dp"
@@ -220,7 +206,7 @@
                     android:textColor="#000000" />
 
                 <EditText
-                    android:id="@+id/country"
+                    android:id="@+id/contacts"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:layout_marginLeft="10dp"
@@ -232,7 +218,7 @@
                     android:singleLine="true"
                     android:textColor="#000000" />
             </LinearLayout>
-            <!-- create a Linear Layout with horizontal orientation and weightSum property -->
+
 
             <LinearLayout
                 android:id="@+id/seventhLayout"
@@ -241,8 +227,6 @@
                 android:layout_marginTop="20dp"
                 android:orientation="horizontal"
                 android:weightSum="2">
-
-                <!-- place one TextView and one EditText inside layout using weight property -->
 
                 <TextView
                     android:layout_width="0dp"
@@ -255,7 +239,7 @@
                     android:textColor="#000000" />
 
                 <EditText
-                    android:id="@+id/pinCode"
+                    android:id="@+id/comment"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:layout_marginLeft="10dp"
