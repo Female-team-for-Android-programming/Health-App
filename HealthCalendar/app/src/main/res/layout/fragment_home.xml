@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context="com.example.user.healthcalendar.Fragments.FragmentHome">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
         android:id="@+id/textView4"
         android:layout_width="0dp"

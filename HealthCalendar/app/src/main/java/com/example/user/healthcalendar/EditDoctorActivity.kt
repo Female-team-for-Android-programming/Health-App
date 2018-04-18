@@ -99,7 +99,7 @@ class EditDoctorActivity : AppCompatActivity() {
             var commentIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.COMMENT)
 
             do {
-                Log.d("mLog", "ID = " + cursor.getInt(idIndex)
+                Log.i("mLog", "ID = " + cursor.getInt(idIndex)
                         + ", speciality = " + cursor.getString(specialityIndex)
                         + ", name = " + cursor.getString(nameIndex)
                         + ", surname = " + cursor.getString(surnameIndex)
@@ -110,7 +110,7 @@ class EditDoctorActivity : AppCompatActivity() {
             } while (cursor.moveToNext())
         }
         else {
-            Log.d("mLog", "0 rows")
+            Log.i("mLog", "0 rows")
         }
         cursor.close()
 

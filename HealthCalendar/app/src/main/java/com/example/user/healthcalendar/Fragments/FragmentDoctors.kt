@@ -1,20 +1,21 @@
 package com.example.user.healthcalendar.Fragments
 
-import android.content.Context
 import android.content.Intent
+import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
-import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.*
+import com.example.user.healthcalendar.Database.DatabaseContract
+import com.example.user.healthcalendar.Database.DbHelper
 import com.example.user.healthcalendar.EditDoctorActivity
 
 import com.example.user.healthcalendar.R
-import kotlinx.android.synthetic.main.fragment_doctors.*
 
 /**
  * A simple [Fragment] subclass.
@@ -32,6 +33,12 @@ class FragmentDoctors : Fragment() {
 
     private var mListener: OnFragmentInteractionListener? = null
 
+    var doctorsListView : ListView? = null
+    var cursor : Cursor? = null
+    var dbHelper : DbHelper? = null
+    var simpleCursorAdapter : SimpleCursorAdapter? = null
+    //var doctorsEmpty : TextView? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
@@ -47,12 +54,49 @@ class FragmentDoctors : Fragment() {
         val view : View = inflater!!.inflate(R.layout.fragment_doctors, container, false)
         val fab : FloatingActionButton = view.findViewById<FloatingActionButton>(R.id.fab_doctors)
         fab.setOnClickListener(View.OnClickListener {
-
             goToEditDoctorActivity()
-            /*Toast.makeText(activity.applicationContext, "Action for Doctors Fragment", Toast.LENGTH_SHORT).show()*/
         })
 
+        dbHelper = DbHelper(activity)
+
+        //doctorsEmpty = getView()?.findViewById<TextView>(R.id.doctors_list_empty_textview)
+        doctorsListView = view.findViewById<ListView>(R.id.doctors_listview)
+
+        showDBdata()
+
         return view
+    }
+
+    fun showDBdata() {
+
+        var database = dbHelper!!.getWritableDatabase()
+        cursor = database.query(DatabaseContract.DoctorsColumns.TABLE_NAME, null, null, null, null, null, null)
+
+        var from = arrayOf<String>(DatabaseContract.DoctorsColumns._ID,
+                DatabaseContract.DoctorsColumns.SPECIALITY,
+                DatabaseContract.DoctorsColumns.NAME,
+                DatabaseContract.DoctorsColumns.SURNAME,
+                DatabaseContract.DoctorsColumns.FATHERSNAME,
+                DatabaseContract.DoctorsColumns.ADDRESS,
+                DatabaseContract.DoctorsColumns.CONTACTS,
+                DatabaseContract.DoctorsColumns.COMMENT)
+        var to = intArrayOf(R.id.doctors_list_item_id,
+                R.id.doctors_list_item_speciality,
+                R.id.doctors_list_item_name,
+                R.id.doctors_list_item_surname,
+                R.id.doctors_list_item_fathersname,
+                R.id.doctors_list_item_address,
+                R.id.doctors_list_item_contacts,
+                R.id.doctors_list_item_comment)
+
+        simpleCursorAdapter = SimpleCursorAdapter(activity, R.layout.fragment_doctors_list_view_item, cursor, from, to, SimpleCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER)
+
+        doctorsListView?.setAdapter(simpleCursorAdapter)
+
+        cursor?.close()
+
+        dbHelper?.close()
+
     }
 
     fun goToEditDoctorActivity() {

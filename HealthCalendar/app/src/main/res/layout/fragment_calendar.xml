@@ -6,8 +6,6 @@
     android:layout_height="match_parent"
     tools:context="com.example.user.healthcalendar.Fragments.FragmentCalendar">
 
-    <!-- TODO: Update blank fragment layout -->
-
     <CalendarView
         android:id="@+id/calendarView"
         android:layout_width="wrap_content"
@@ -40,5 +38,3 @@
         app:layout_constraintVertical_bias="0.982" />
 
 </android.support.constraint.ConstraintLayout>
-
-    <!--android:text="This is ic_menu_calendarndar fragment"-->

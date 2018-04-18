@@ -19,9 +19,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".EditDoctorActivity">
-
-        </activity>
+        <activity android:name=".EditDoctorActivity"></activity>
     </application>
 
 </manifest>
