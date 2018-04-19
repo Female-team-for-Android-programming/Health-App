@@ -10,12 +10,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.ListView
+import android.widget.SimpleCursorAdapter
 import com.example.user.healthcalendar.Database.DatabaseContract
 import com.example.user.healthcalendar.Database.DbHelper
 import com.example.user.healthcalendar.EditDoctorActivity
-
 import com.example.user.healthcalendar.R
+
 
 /**
  * A simple [Fragment] subclass.
@@ -45,6 +46,18 @@ class FragmentDoctors : Fragment() {
             mParam1 = arguments.getString(ARG_PARAM1)
             mParam2 = arguments.getString(ARG_PARAM2)
         }
+        dbHelper = DbHelper(context)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        cursor?.close()
+        dbHelper?.close()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        showDBdata()
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
@@ -52,15 +65,12 @@ class FragmentDoctors : Fragment() {
         // Inflate the layout for this fragment
 
         val view : View = inflater!!.inflate(R.layout.fragment_doctors, container, false)
-        val fab : FloatingActionButton = view.findViewById<FloatingActionButton>(R.id.fab_doctors)
-        fab.setOnClickListener(View.OnClickListener {
+        val fab : FloatingActionButton = view.findViewById(R.id.fab_doctors)
+        fab.setOnClickListener({
             goToEditDoctorActivity()
         })
-
-        dbHelper = DbHelper(activity)
-
         //doctorsEmpty = getView()?.findViewById<TextView>(R.id.doctors_list_empty_textview)
-        doctorsListView = view.findViewById<ListView>(R.id.doctors_listview)
+        doctorsListView = view.findViewById(R.id.doctors_listview)
 
         showDBdata()
 
@@ -69,10 +79,11 @@ class FragmentDoctors : Fragment() {
 
     fun showDBdata() {
 
-        var database = dbHelper!!.getWritableDatabase()
-        cursor = database.query(DatabaseContract.DoctorsColumns.TABLE_NAME, null, null, null, null, null, null)
+        val database = dbHelper!!.readableDatabase
+        cursor = database.query(DatabaseContract.DoctorsColumns.TABLE_NAME, null, null,
+                null, null, null, null)
 
-        var from = arrayOf<String>(DatabaseContract.DoctorsColumns._ID,
+        val from = arrayOf(DatabaseContract.DoctorsColumns._ID,
                 DatabaseContract.DoctorsColumns.SPECIALITY,
                 DatabaseContract.DoctorsColumns.NAME,
                 DatabaseContract.DoctorsColumns.SURNAME,
@@ -80,7 +91,7 @@ class FragmentDoctors : Fragment() {
                 DatabaseContract.DoctorsColumns.ADDRESS,
                 DatabaseContract.DoctorsColumns.CONTACTS,
                 DatabaseContract.DoctorsColumns.COMMENT)
-        var to = intArrayOf(R.id.doctors_list_item_id,
+        val to = intArrayOf(R.id.doctors_list_item_id,
                 R.id.doctors_list_item_speciality,
                 R.id.doctors_list_item_name,
                 R.id.doctors_list_item_surname,
@@ -89,14 +100,11 @@ class FragmentDoctors : Fragment() {
                 R.id.doctors_list_item_contacts,
                 R.id.doctors_list_item_comment)
 
-        simpleCursorAdapter = SimpleCursorAdapter(activity, R.layout.fragment_doctors_list_view_item, cursor, from, to, SimpleCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER)
+        Log.i("cursorLen", cursor!!.count.toString())
 
-        doctorsListView?.setAdapter(simpleCursorAdapter)
-
-        cursor?.close()
-
-        dbHelper?.close()
-
+        simpleCursorAdapter = SimpleCursorAdapter(context, R.layout.fragment_doctors_list_view_item,
+                cursor, from, to, SimpleCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER)
+        doctorsListView!!.adapter = simpleCursorAdapter
     }
 
     fun goToEditDoctorActivity() {
