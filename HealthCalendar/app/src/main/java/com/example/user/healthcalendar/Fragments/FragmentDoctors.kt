@@ -10,8 +10,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ListView
 import android.widget.SimpleCursorAdapter
+import android.widget.Toast
 import com.example.user.healthcalendar.Database.DatabaseContract
 import com.example.user.healthcalendar.Database.DbHelper
 import com.example.user.healthcalendar.EditDoctorActivity
@@ -38,6 +40,7 @@ class FragmentDoctors : Fragment() {
     var cursor : Cursor? = null
     var dbHelper : DbHelper? = null
     var simpleCursorAdapter : SimpleCursorAdapter? = null
+
     //var doctorsEmpty : TextView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,24 +60,27 @@ class FragmentDoctors : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        val fab : FloatingActionButton = getView()!!.findViewById(R.id.fab_doctors)
+        fab.setOnClickListener({
+            goToEditDoctorActivity()
+        })
+        doctorsListView = getView()?.findViewById(R.id.doctors_listview)
+
         showDBdata()
+
+        doctorsListView?.onItemClickListener = AdapterView.OnItemClickListener {
+            parent, view, position, id ->
+            val listItem = doctorsListView?.getItemAtPosition(position)
+            Toast.makeText(activity.applicationContext, "Вы выбрали item на позиции " + position, Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
 
-        val view : View = inflater!!.inflate(R.layout.fragment_doctors, container, false)
-        val fab : FloatingActionButton = view.findViewById(R.id.fab_doctors)
-        fab.setOnClickListener({
-            goToEditDoctorActivity()
-        })
-        //doctorsEmpty = getView()?.findViewById<TextView>(R.id.doctors_list_empty_textview)
-        doctorsListView = view.findViewById(R.id.doctors_listview)
+        return inflater!!.inflate(R.layout.fragment_doctors, container, false)
 
-        showDBdata()
-
-        return view
     }
 
     fun showDBdata() {
@@ -100,7 +106,7 @@ class FragmentDoctors : Fragment() {
                 R.id.doctors_list_item_contacts,
                 R.id.doctors_list_item_comment)
 
-        Log.i("cursorLen", cursor!!.count.toString())
+        //Log.i("cursorLen", cursor!!.count.toString())
 
         simpleCursorAdapter = SimpleCursorAdapter(context, R.layout.fragment_doctors_list_view_item,
                 cursor, from, to, SimpleCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER)
