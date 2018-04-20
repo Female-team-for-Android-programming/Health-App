@@ -18,6 +18,9 @@ import com.example.user.healthcalendar.Database.DatabaseContract
 import com.example.user.healthcalendar.Database.DbHelper
 import com.example.user.healthcalendar.EditDoctorActivity
 import com.example.user.healthcalendar.R
+import android.widget.TextView
+
+
 
 
 /**
@@ -71,8 +74,15 @@ class FragmentDoctors : Fragment() {
         doctorsListView?.onItemClickListener = AdapterView.OnItemClickListener {
             parent, view, position, id ->
             val listItem = doctorsListView?.getItemAtPosition(position)
-            Toast.makeText(activity.applicationContext, "Вы выбрали item на позиции " + position, Toast.LENGTH_SHORT).show()
+            //Toast.makeText(activity.applicationContext, "Вы выбрали item на позиции " + id, Toast.LENGTH_SHORT).show()
+            goToEditDoctorActivity(id)
         }
+    }
+
+    fun goToEditDoctorActivity(id: Long) {
+        val intent : Intent = Intent(activity, EditDoctorActivity::class.java)
+        intent.putExtra("doctorId",id)
+        startActivity(intent)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
