@@ -7,9 +7,7 @@ import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.AdapterView
 import android.widget.ListView
 import android.widget.SimpleCursorAdapter
@@ -45,6 +43,9 @@ class FragmentDoctors : Fragment() {
     var simpleCursorAdapter : SimpleCursorAdapter? = null
 
     //var doctorsEmpty : TextView? = null
+    //
+    // TODO : need to show something if there is no doctors in list yet
+    //
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,12 +72,34 @@ class FragmentDoctors : Fragment() {
 
         showDBdata()
 
-        doctorsListView?.onItemClickListener = AdapterView.OnItemClickListener {
-            parent, view, position, id ->
-            val listItem = doctorsListView?.getItemAtPosition(position)
-            //Toast.makeText(activity.applicationContext, "Вы выбрали item на позиции " + id, Toast.LENGTH_SHORT).show()
-            goToEditDoctorActivity(id)
+        registerForContextMenu(doctorsListView)
+    }
+
+    override fun onCreateContextMenu(menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
+        super.onCreateContextMenu(menu, v, menuInfo)
+        val inflater = activity.getMenuInflater()
+        inflater.inflate(R.menu.doctor_context_menu, menu)
+    }
+
+    override fun onContextItemSelected(item: MenuItem?): Boolean {
+        val info = item?.menuInfo as AdapterView.AdapterContextMenuInfo
+        when (item.itemId) {
+            R.id.cm_edit -> {
+                //Toast.makeText(activity.applicationContext, "Вы хотите изменить: itemId = " + info.id, Toast.LENGTH_SHORT).show()
+                goToEditDoctorActivity(info.id)
+                return true
+            }
+            R.id.cm_delete -> {
+                Toast.makeText(activity.applicationContext, "Вы хотите удалить: itemId = " + info.id, Toast.LENGTH_SHORT).show()
+                return true
+            }
+            else -> return super.onContextItemSelected(item)
         }
+    }
+
+    fun goToEditDoctorActivity() {
+        val intent : Intent = Intent(activity, EditDoctorActivity::class.java)
+        startActivity(intent)
     }
 
     fun goToEditDoctorActivity(id: Long) {
@@ -94,7 +117,6 @@ class FragmentDoctors : Fragment() {
     }
 
     fun showDBdata() {
-
         val database = dbHelper!!.readableDatabase
         cursor = database.query(DatabaseContract.DoctorsColumns.TABLE_NAME, null, null,
                 null, null, null, null)
@@ -116,16 +138,9 @@ class FragmentDoctors : Fragment() {
                 R.id.doctors_list_item_contacts,
                 R.id.doctors_list_item_comment)
 
-        //Log.i("cursorLen", cursor!!.count.toString())
-
         simpleCursorAdapter = SimpleCursorAdapter(context, R.layout.fragment_doctors_list_view_item,
                 cursor, from, to, SimpleCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER)
         doctorsListView!!.adapter = simpleCursorAdapter
-    }
-
-    fun goToEditDoctorActivity() {
-        val intent : Intent = Intent(activity, EditDoctorActivity::class.java)
-        startActivity(intent)
     }
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -15,7 +15,6 @@ import com.example.user.healthcalendar.Database.DbHelper
 
 class EditDoctorActivity : AppCompatActivity() {
 
-
     var submit: Button? = null
 
     var etSpeciality: Spinner? = null
@@ -27,8 +26,6 @@ class EditDoctorActivity : AppCompatActivity() {
     var etComment: EditText? = null
 
     var dbHelper: DbHelper? = null
-
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -257,6 +254,5 @@ class EditDoctorActivity : AppCompatActivity() {
         //TODO("Now just return back to the Doctors fragment")
 
     }
-
 
 }
