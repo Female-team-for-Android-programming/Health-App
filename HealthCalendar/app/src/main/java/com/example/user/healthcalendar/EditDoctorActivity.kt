@@ -29,6 +29,7 @@ class EditDoctorActivity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_doctor)
 
@@ -59,6 +60,7 @@ class EditDoctorActivity : AppCompatActivity() {
             Log.i("this id = ", id.toString())
             editDoctor(id)
         }
+
     }
 
     fun SetSpinnerSelection(spinner: Spinner, array: Array<String>, text: String) {
@@ -126,9 +128,11 @@ class EditDoctorActivity : AppCompatActivity() {
         })
 
         dbHelper = DbHelper(this)
+
     }
 
     private fun submitDoctorChanges(id: Long){
+
         var speciality = etSpeciality!!.selectedItem.toString()
         var name = etName!!.getText().toString()
         var surname = etSurname!!.getText().toString()
@@ -140,7 +144,6 @@ class EditDoctorActivity : AppCompatActivity() {
         var database = dbHelper!!.getWritableDatabase()
 
         var contentValues = ContentValues()
-
 
         contentValues.put(DatabaseContract.DoctorsColumns.SPECIALITY, speciality)
         contentValues.put(DatabaseContract.DoctorsColumns.NAME, name)
@@ -153,46 +156,13 @@ class EditDoctorActivity : AppCompatActivity() {
         database.update(DatabaseContract.DoctorsColumns.TABLE_NAME, contentValues,
                 DatabaseContract.DoctorsColumns._ID + "=" + id, null)
 
-        //write content of the database to the log
-        /*
-
-        var cursor : Cursor = database.query(DatabaseContract.DoctorsColumns.TABLE_NAME, null, null, null, null, null, null)
-
-        if (cursor.moveToFirst()) {
-            var idIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns._ID)
-            var specialityIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.SPECIALITY)
-            var nameIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.NAME)
-            var surnameIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.SURNAME)
-            var fathersnameIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.FATHERSNAME)
-            var addressIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.ADDRESS)
-            var contactsIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.CONTACTS)
-            var commentIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.COMMENT)
-
-            do {
-                Log.i("mLog", "ID = " + cursor.getInt(idIndex)
-                        + ", speciality = " + cursor.getString(specialityIndex)
-                        + ", name = " + cursor.getString(nameIndex)
-                        + ", surname = " + cursor.getString(surnameIndex)
-                        + ", fathersname = " + cursor.getString(fathersnameIndex)
-                        + ", addressIndex = " + cursor.getString(addressIndex)
-                        + ", contactsIndex = " + cursor.getString(contactsIndex)
-                        + ", commentIndex = " + cursor.getString(commentIndex))
-            } while (cursor.moveToNext())
-        }
-        else {
-            Log.i("mLog", "0 rows")
-        }
-        cursor.close()
-        */
-
         dbHelper?.close()
 
         super.onBackPressed()
+
     }
 
     private fun submitNewDoctor() {
-
-        //TODO("And here we need to update Database somehow")
 
         var speciality = etSpeciality!!.selectedItem.toString()
         var name = etName!!.getText().toString()
@@ -206,7 +176,6 @@ class EditDoctorActivity : AppCompatActivity() {
 
         var contentValues = ContentValues()
 
-
         contentValues.put(DatabaseContract.DoctorsColumns.SPECIALITY, speciality)
         contentValues.put(DatabaseContract.DoctorsColumns.NAME, name)
         contentValues.put(DatabaseContract.DoctorsColumns.SURNAME, surname)
@@ -217,41 +186,9 @@ class EditDoctorActivity : AppCompatActivity() {
 
         database.insert(DatabaseContract.DoctorsColumns.TABLE_NAME, null, contentValues)
 
-        //write content of the database to the log
-        /*
-        var cursor : Cursor = database.query(DatabaseContract.DoctorsColumns.TABLE_NAME, null, null, null, null, null, null)
-
-        if (cursor.moveToFirst()) {
-            var idIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns._ID)
-            var specialityIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.SPECIALITY)
-            var nameIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.NAME)
-            var surnameIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.SURNAME)
-            var fathersnameIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.FATHERSNAME)
-            var addressIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.ADDRESS)
-            var contactsIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.CONTACTS)
-            var commentIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.COMMENT)
-
-            do {
-                Log.i("mLog", "ID = " + cursor.getInt(idIndex)
-                        + ", speciality = " + cursor.getString(specialityIndex)
-                        + ", name = " + cursor.getString(nameIndex)
-                        + ", surname = " + cursor.getString(surnameIndex)
-                        + ", fathersname = " + cursor.getString(fathersnameIndex)
-                        + ", addressIndex = " + cursor.getString(addressIndex)
-                        + ", contactsIndex = " + cursor.getString(contactsIndex)
-                        + ", commentIndex = " + cursor.getString(commentIndex))
-            } while (cursor.moveToNext())
-        }
-        else {
-            Log.i("mLog", "0 rows")
-        }
-        cursor.close()
-        */
-
         dbHelper?.close()
 
         super.onBackPressed()
-        //TODO("Now just return back to the Doctors fragment")
 
     }
 
