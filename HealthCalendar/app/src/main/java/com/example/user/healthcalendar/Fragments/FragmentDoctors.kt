@@ -73,6 +73,7 @@ class FragmentDoctors : Fragment() {
         showDBdata()
 
         registerForContextMenu(doctorsListView)
+
     }
 
     override fun onCreateContextMenu(menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
@@ -90,11 +91,21 @@ class FragmentDoctors : Fragment() {
                 return true
             }
             R.id.cm_delete -> {
-                Toast.makeText(activity.applicationContext, "Вы хотите удалить: itemId = " + info.id, Toast.LENGTH_SHORT).show()
+                deleteDoctor(info.id)
+                //Toast.makeText(activity.applicationContext, "Вы хотите удалить: itemId = " + info.id, Toast.LENGTH_SHORT).show()
                 return true
             }
             else -> return super.onContextItemSelected(item)
         }
+    }
+
+    fun deleteDoctor(id: Long){
+
+        var dbHelper: DbHelper? =  DbHelper(context)
+        var database = dbHelper!!.getWritableDatabase()
+
+        database.delete(DatabaseContract.DoctorsColumns.TABLE_NAME,
+                DatabaseContract.DoctorsColumns._ID  +  "=" + id, null)
     }
 
     fun goToEditDoctorActivity() {
