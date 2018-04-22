@@ -86,13 +86,11 @@ class FragmentDoctors : Fragment() {
         val info = item?.menuInfo as AdapterView.AdapterContextMenuInfo
         when (item.itemId) {
             R.id.cm_edit -> {
-                //Toast.makeText(activity.applicationContext, "Вы хотите изменить: itemId = " + info.id, Toast.LENGTH_SHORT).show()
                 goToEditDoctorActivity(info.id)
                 return true
             }
             R.id.cm_delete -> {
                 deleteDoctor(info.id)
-                //Toast.makeText(activity.applicationContext, "Вы хотите удалить: itemId = " + info.id, Toast.LENGTH_SHORT).show()
                 return true
             }
             else -> return super.onContextItemSelected(item)
@@ -106,6 +104,7 @@ class FragmentDoctors : Fragment() {
 
         database.delete(DatabaseContract.DoctorsColumns.TABLE_NAME,
                 DatabaseContract.DoctorsColumns._ID  +  "=" + id, null)
+        showDBdata()
     }
 
     fun goToEditDoctorActivity() {
@@ -122,7 +121,6 @@ class FragmentDoctors : Fragment() {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-
         return inflater!!.inflate(R.layout.fragment_doctors, container, false)
 
     }
