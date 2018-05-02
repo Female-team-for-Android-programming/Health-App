@@ -1,6 +1,8 @@
 package com.example.user.healthcalendar.Fragments
 
 import android.content.Context
+import android.content.Intent
+import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
@@ -9,8 +11,9 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.Toast
+import android.widget.*
+import com.example.user.healthcalendar.Database.DbHelper
+import com.example.user.healthcalendar.EditEventActivity
 
 import com.example.user.healthcalendar.R
 import kotlinx.android.synthetic.main.fragment_calendar.*
@@ -31,24 +34,60 @@ class FragmentCalendar : Fragment() {
 
     private var mListener: OnFragmentInteractionListener? = null
 
+    var calendarView : CalendarView? = null
+    var dateDisplay : TextView? = null
+
+    var cursor : Cursor? = null
+    var dbHelper : DbHelper? = null
+    //var simpleCursorAdapter : SimpleCursorAdapter? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
             mParam1 = arguments.getString(ARG_PARAM1)
             mParam2 = arguments.getString(ARG_PARAM2)
         }
+        dbHelper = DbHelper(context)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        cursor?.close()
+        dbHelper?.close()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val fab : FloatingActionButton = view!!.findViewById(R.id.fab_calendar)
+        fab.setOnClickListener(View.OnClickListener {
+            goToEditEventActivity()
+        })
+
+        calendarView = view!!.findViewById(R.id.calendarView)
+        dateDisplay = view!!.findViewById(R.id.dateDisplay)
+        //dateDisplay?.setText("Date: ")
+
+        calendarView?.setOnDateChangeListener(CalendarView.OnDateChangeListener() {
+            calendarView, year, month, day ->
+            dateDisplay?.setText("Date: " + day + "/" + (month + 1) + "/" + year)
+        })
+    }
+
+    fun goToEditEventActivity() {
+        val intent : Intent = Intent(activity, EditEventActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun goToEditEventActivity(id: Long) {
+        val intent : Intent = Intent(activity, EditEventActivity::class.java)
+        intent.putExtra("eventId", id)
+        startActivity(intent)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        val view : View = inflater!!.inflate(R.layout.fragment_calendar, container, false)
-        val fab : FloatingActionButton = view.findViewById(R.id.fab_calendar)
-        fab.setOnClickListener(View.OnClickListener {
-            Toast.makeText(activity.applicationContext, "Action for Calendar Fragment", Toast.LENGTH_SHORT).show()
-        })
-
-        return view
+        return inflater!!.inflate(R.layout.fragment_calendar, container, false)
     }
 
     // TODO: Rename method, update argument and hook method into UI event
