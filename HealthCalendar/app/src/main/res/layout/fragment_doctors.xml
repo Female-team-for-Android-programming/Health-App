@@ -12,12 +12,12 @@
         android:layout_height="wrap_content">
     </ListView>
 
-    <!--<TextView
+    <TextView
         android:id="@+id/doctors_list_empty_textview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Список специалистов пуст"
-        android:textSize="20dp"/>-->
+        android:textSize="20dp"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_doctors"

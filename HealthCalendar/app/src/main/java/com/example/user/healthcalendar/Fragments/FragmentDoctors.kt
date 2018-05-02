@@ -38,14 +38,10 @@ class FragmentDoctors : Fragment() {
     private var mListener: OnFragmentInteractionListener? = null
 
     var doctorsListView : ListView? = null
+    var doctorsEmpty : TextView? = null
     var cursor : Cursor? = null
     var dbHelper : DbHelper? = null
     var simpleCursorAdapter : SimpleCursorAdapter? = null
-
-    //var doctorsEmpty : TextView? = null
-    //
-    // TODO : need to show something if there is no doctors in list yet
-    //
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,6 +65,7 @@ class FragmentDoctors : Fragment() {
             goToEditDoctorActivity()
         })
         doctorsListView = getView()?.findViewById(R.id.doctors_listview)
+        doctorsEmpty = getView()?.findViewById(R.id.doctors_list_empty_textview)
 
         showDBdata()
 
@@ -130,26 +127,35 @@ class FragmentDoctors : Fragment() {
         cursor = database.query(DatabaseContract.DoctorsColumns.TABLE_NAME, null, null,
                 null, null, null, null)
 
-        val from = arrayOf(DatabaseContract.DoctorsColumns._ID,
-                DatabaseContract.DoctorsColumns.SPECIALITY,
-                DatabaseContract.DoctorsColumns.NAME,
-                DatabaseContract.DoctorsColumns.SURNAME,
-                DatabaseContract.DoctorsColumns.FATHERSNAME,
-                DatabaseContract.DoctorsColumns.ADDRESS,
-                DatabaseContract.DoctorsColumns.CONTACTS,
-                DatabaseContract.DoctorsColumns.COMMENT)
-        val to = intArrayOf(R.id.doctors_list_item_id,
-                R.id.doctors_list_item_speciality,
-                R.id.doctors_list_item_name,
-                R.id.doctors_list_item_surname,
-                R.id.doctors_list_item_fathersname,
-                R.id.doctors_list_item_address,
-                R.id.doctors_list_item_contacts,
-                R.id.doctors_list_item_comment)
+        if (cursor?.count == 0) {
+            //means database is empty
+            doctorsListView?.visibility = View.GONE
+            doctorsEmpty?.visibility = View.VISIBLE
+        }
+        else {
+            doctorsListView?.visibility = View.VISIBLE
+            doctorsEmpty?.visibility = View.GONE
+            val from = arrayOf(DatabaseContract.DoctorsColumns._ID,
+                    DatabaseContract.DoctorsColumns.SPECIALITY,
+                    DatabaseContract.DoctorsColumns.NAME,
+                    DatabaseContract.DoctorsColumns.SURNAME,
+                    DatabaseContract.DoctorsColumns.FATHERSNAME,
+                    DatabaseContract.DoctorsColumns.ADDRESS,
+                    DatabaseContract.DoctorsColumns.CONTACTS,
+                    DatabaseContract.DoctorsColumns.COMMENT)
+            val to = intArrayOf(R.id.doctors_list_item_id,
+                    R.id.doctors_list_item_speciality,
+                    R.id.doctors_list_item_name,
+                    R.id.doctors_list_item_surname,
+                    R.id.doctors_list_item_fathersname,
+                    R.id.doctors_list_item_address,
+                    R.id.doctors_list_item_contacts,
+                    R.id.doctors_list_item_comment)
 
-        simpleCursorAdapter = SimpleCursorAdapter(context, R.layout.fragment_doctors_list_view_item,
-                cursor, from, to, SimpleCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER)
-        doctorsListView!!.adapter = simpleCursorAdapter
+            simpleCursorAdapter = SimpleCursorAdapter(context, R.layout.fragment_doctors_list_view_item,
+                    cursor, from, to, SimpleCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER)
+            doctorsListView!!.adapter = simpleCursorAdapter
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event
