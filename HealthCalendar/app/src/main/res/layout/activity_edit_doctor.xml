@@ -253,7 +253,7 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/submit"
+                android:id="@+id/submit_doctor"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
