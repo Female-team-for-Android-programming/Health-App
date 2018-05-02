@@ -113,7 +113,7 @@ class EditDoctorActivity : AppCompatActivity() {
         }
         cursor.close()
 
-        submit = findViewById<Button>(R.id.submit)
+        submit = findViewById<Button>(R.id.submit_doctor)
         submit!!.setOnClickListener(View.OnClickListener {
             submitDoctorChanges(id)
         })
@@ -122,7 +122,7 @@ class EditDoctorActivity : AppCompatActivity() {
 
     fun createDoctor(){
 
-        submit = findViewById<Button>(R.id.submit)
+        submit = findViewById<Button>(R.id.submit_doctor)
         submit!!.setOnClickListener(View.OnClickListener {
             submitNewDoctor()
         })

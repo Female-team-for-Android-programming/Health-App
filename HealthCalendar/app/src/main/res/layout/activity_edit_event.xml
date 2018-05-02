@@ -36,18 +36,17 @@
                     android:layout_weight="0.6"
                     android:gravity="center_vertical"
                     android:paddingLeft="10dp"
-                    android:text="Специалист"
+                    android:text="Выберите врача"
                     android:textColor="#000000"
                     android:textSize="14sp" />
 
                 <Spinner
-                    android:id="@+id/speciality"
+                    android:id="@+id/event_doctor_spinner"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1.4" />
             </LinearLayout>
-
 
             <LinearLayout
                 android:id="@+id/secondLayout"
@@ -64,24 +63,23 @@
                     android:layout_weight="0.6"
                     android:gravity="center_vertical"
                     android:paddingLeft="10dp"
-                    android:text="Имя"
+                    android:text="Выберите дату"
                     android:textColor="#000000" />
 
                 <EditText
-                    android:id="@+id/name"
+                    android:id="@+id/event_date"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1.4"
                     android:background="#F5F2F6"
-                    android:hint="Имя"
+                    android:hint="Дата"
                     android:imeOptions="actionNext"
-                    android:inputType="text"
+                    android:inputType="date"
                     android:paddingLeft="10dp"
                     android:singleLine="true"
                     android:textColor="#000000" />
             </LinearLayout>
-
 
             <LinearLayout
                 android:id="@+id/thirdLayout"
@@ -98,24 +96,23 @@
                     android:layout_weight="0.6"
                     android:gravity="center_vertical"
                     android:paddingLeft="10dp"
-                    android:text="Фамилия"
+                    android:text="Выберите время"
                     android:textColor="#000000" />
 
                 <EditText
-                    android:id="@+id/surname"
+                    android:id="@+id/event_time"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1.4"
                     android:background="#F5F2F6"
-                    android:hint="Фамилия"
+                    android:hint="Время"
                     android:imeOptions="actionNext"
-                    android:inputType="text"
+                    android:inputType="time"
                     android:paddingLeft="10dp"
                     android:singleLine="true"
                     android:textColor="#000000" />
             </LinearLayout>
-
 
             <LinearLayout
                 android:id="@+id/fourthLayout"
@@ -132,119 +129,17 @@
                     android:layout_weight="0.6"
                     android:gravity="center_vertical"
                     android:paddingLeft="10dp"
-                    android:text="Отчество"
+                    android:text="Добавьте комментарий"
                     android:textColor="#000000" />
 
                 <EditText
-                    android:id="@+id/fathersName"
+                    android:id="@+id/event_comment"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1.4"
                     android:background="#F5F2F6"
-                    android:hint="Отчество"
-                    android:imeOptions="actionNext"
-                    android:inputType="text"
-                    android:paddingLeft="10dp"
-                    android:singleLine="true"
-                    android:textColor="#000000" />
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:id="@+id/fifthLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal"
-                android:weightSum="2">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_weight="0.6"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="10dp"
-                    android:text="Адрес"
-                    android:textColor="#000000" />
-
-                <EditText
-                    android:id="@+id/address"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_weight="1.4"
-                    android:background="#F5F2F6"
-                    android:hint="Адрес"
-                    android:imeOptions="actionNext"
-                    android:inputType="text"
-                    android:paddingLeft="10dp"
-                    android:singleLine="true"
-                    android:textColor="#000000" />
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:id="@+id/sixthLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal"
-                android:weightSum="2">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_weight="0.6"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="10dp"
-                    android:text="Контакты"
-                    android:textColor="#000000" />
-
-                <EditText
-                    android:id="@+id/contacts"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_weight="1.4"
-                    android:background="#F5F2F6"
-                    android:hint="Контакты"
-                    android:imeOptions="actionNext"
-                    android:inputType="text"
-                    android:paddingLeft="10dp"
-                    android:singleLine="true"
-                    android:textColor="#000000" />
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:id="@+id/seventhLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal"
-                android:weightSum="2">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_weight="0.6"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="10dp"
-                    android:text="Заметка"
-                    android:textColor="#000000" />
-
-                <EditText
-                    android:id="@+id/comment"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_weight="1.4"
-                    android:background="#F5F2F6"
-                    android:hint="Заметка"
+                    android:hint="Комментарий"
                     android:imeOptions="actionNext"
                     android:inputType="text"
                     android:paddingLeft="10dp"
@@ -253,7 +148,7 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/submit_doctor"
+                android:id="@+id/submit_event"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
@@ -262,5 +157,6 @@
                 android:textColor="#FFFFFF" />
         </LinearLayout>
     </ScrollView>
+
 
 </LinearLayout>

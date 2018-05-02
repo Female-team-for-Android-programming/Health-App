@@ -26,5 +26,11 @@ public final class DatabaseContract {
 
         public final static String TABLE_NAME = "Events";
 
+        public static final String _ID = BaseColumns._ID;
+        public static final String DOCTOR_ID = "doctors_id";
+        public static final String DATE = "date";
+        public static final String TIME = "time";
+        public static final String COMMENT = "comment";
+
     }
 }

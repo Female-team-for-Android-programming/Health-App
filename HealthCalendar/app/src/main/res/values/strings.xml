@@ -7,6 +7,7 @@
     <string name="action_settings">Settings</string>
 
     <string-array name="doctors_specialties">
+        <item>Другая специальность</item>
         <item>Акушер-гинеколог</item>
         <item>Аллерголог</item>
         <item>Андролог</item>
