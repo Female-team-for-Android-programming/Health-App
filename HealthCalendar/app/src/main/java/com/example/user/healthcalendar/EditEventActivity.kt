@@ -73,6 +73,7 @@ class EditEventActivity : AppCompatActivity() {
     }
 */
     fun loadSpinnerData() {
+
         val list_of_ids = getAllDoctors()
         val dataAdapter = ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, list_of_ids)
@@ -101,6 +102,7 @@ class EditEventActivity : AppCompatActivity() {
                 null, null, null, null)
 
         if (cursor.moveToFirst()) {
+
             var idIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns._ID)
             var specialityIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.SPECIALITY)
             var nameIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.NAME)
@@ -118,7 +120,11 @@ class EditEventActivity : AppCompatActivity() {
                         + " "
                         + cursor.getString(nameIndex)
                         + " "
-                        + cursor.getString(fathersnameIndex))
+                        + cursor.getString(fathersnameIndex)
+                        + " "
+                        + cursor.getInt(idIndex)
+                )
+
             } while (cursor.moveToNext())
         }
 
@@ -143,12 +149,36 @@ class EditEventActivity : AppCompatActivity() {
 
     }
 
+    fun parserDocotorSpinner(st: String):Int{
+
+        var ans: String = ""
+        var k: Int
+
+        for (i in (st.length-1) downTo 0 ){
+
+            if (st[i] == ' ') {
+                break
+            }
+            else {
+                ans = ans + st[i]
+            }
+        }
+
+        ans = ans.reversed()
+
+        Log.i("mmmmmmm", ans)
+
+        return ans.toInt()
+    }
+
     private fun submitNewEvent() {
 
-        var doctor = etDoctor!!.selectedItem.toString()
+        var doctorSpinnerString = etDoctor!!.selectedItem.toString()
+
         var date = etDate!!.getText().toString()
         var time = etTime!!.getText().toString()
         var comment = etComment!!.getText().toString()
+        var doctor = parserDocotorSpinner(doctorSpinnerString)
 
         var database = dbHelper!!.getWritableDatabase()
 
