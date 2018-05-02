@@ -33,7 +33,13 @@ public class DbHelper  extends SQLiteOpenHelper {
     }
 
     private static void createEvents(SQLiteDatabase db){
-
+        String SQL = "CREATE TABLE IF NOT EXISTS " + DatabaseContract.EventsColumns.TABLE_NAME + " ("
+                + DatabaseContract.EventsColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + DatabaseContract.EventsColumns.DOCTOR_ID + " TEXT NOT NULL, "
+                + DatabaseContract.EventsColumns.DATE + " TEXT NOT NULL, "
+                + DatabaseContract.EventsColumns.TIME + " TEXT, "
+                + DatabaseContract.EventsColumns.COMMENT + " TEXT);";
+        db.execSQL(SQL);
     }
 
     static void createTable(String tableName, SQLiteDatabase db){
