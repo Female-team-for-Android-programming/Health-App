@@ -6,10 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Spinner
+import android.widget.*
 import com.example.user.healthcalendar.Database.DatabaseContract
 import com.example.user.healthcalendar.Database.DbHelper
 
@@ -30,13 +27,14 @@ class EditEventActivity : AppCompatActivity() {
 
         dbHelper = DbHelper(this)
 
-        //loadSpinnerData()
-        //val list_of_ids = getAllDoctors()
 
         etDoctor = findViewById(R.id.event_doctor_spinner)
         etDate = findViewById(R.id.event_date)
         etTime = findViewById(R.id.event_time)
         etComment = findViewById(R.id.event_comment)
+
+
+        loadSpinnerData()
 
         val intent = intent
 
@@ -73,7 +71,7 @@ class EditEventActivity : AppCompatActivity() {
 
         return idsList
     }
-
+*/
     fun loadSpinnerData() {
         val list_of_ids = getAllDoctors()
         val dataAdapter = ArrayAdapter<String>(this,
@@ -84,15 +82,52 @@ class EditEventActivity : AppCompatActivity() {
 
         // attaching data adapter to spinner
         etDoctor?.setAdapter(dataAdapter);
-    }*/
+    }
 
-    /*fun SetSpinnerSelection(spinner: Spinner, array: Array<String>, text: String) {
+    fun SetSpinnerSelection(spinner: Spinner, array: Array<String>, text: String) {
         for (i in array.indices) {
             if (array[i] == text) {
                 spinner.setSelection(i)
             }
         }
-    }*/
+    }
+
+    fun getAllDoctors(): ArrayList<String> {
+
+        var doctorsList = ArrayList<String>();
+
+        val database = dbHelper!!.readableDatabase
+        var cursor = database.query(DatabaseContract.DoctorsColumns.TABLE_NAME, null, null,
+                null, null, null, null)
+
+        if (cursor.moveToFirst()) {
+            var idIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns._ID)
+            var specialityIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.SPECIALITY)
+            var nameIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.NAME)
+            var surnameIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.SURNAME)
+            var fathersnameIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.FATHERSNAME)
+            var addressIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.ADDRESS)
+            var contactsIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.CONTACTS)
+            var commentIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.COMMENT)
+
+            do {
+
+                doctorsList.add(cursor.getString(specialityIndex)
+                        + " "
+                        + cursor.getString(surnameIndex)
+                        + " "
+                        + cursor.getString(nameIndex)
+                        + " "
+                        + cursor.getString(fathersnameIndex))
+            } while (cursor.moveToNext())
+        }
+
+        cursor.close()
+        database.close()
+
+        return doctorsList
+    }
+
 
 
     //TODO : and below everything is fine, I hope
