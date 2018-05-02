@@ -54,24 +54,6 @@ class EditEventActivity : AppCompatActivity() {
     //TODO : The code below was attempt to set selection of doctors in database to spinner
     //TODO : it does not work and the whole app restarts after clicking submit event button :)
 
-    /*fun getAllDoctors(): ArrayList<String> {
-        var idsList = ArrayList<String>();
-        val selectQuery = "SELECT * FROM " + DatabaseContract.DoctorsColumns.TABLE_NAME
-
-        val db = dbHelper!!.readableDatabase
-        val cursor : Cursor = db.rawQuery(selectQuery, null)
-        if (cursor.moveToFirst()) {
-            do {
-                idsList.add(cursor.getString(1))
-            } while (cursor.moveToNext())
-        }
-
-        cursor.close()
-        db.close()
-
-        return idsList
-    }
-*/
     fun loadSpinnerData() {
 
         val list_of_ids = getAllDoctors()
