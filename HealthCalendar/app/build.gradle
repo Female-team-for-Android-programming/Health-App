@@ -23,6 +23,7 @@ android {
 }
 
 dependencies {
+    implementation 'com.applandeo:material-calendar-view:1.4.0'
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     implementation 'com.android.support:appcompat-v7:26.1.0'

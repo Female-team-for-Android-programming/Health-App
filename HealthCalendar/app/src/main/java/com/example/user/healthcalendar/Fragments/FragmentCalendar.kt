@@ -8,10 +8,15 @@ import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
+import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.TextView
+import com.applandeo.materialcalendarview.CalendarView
+import com.applandeo.materialcalendarview.EventDay
+import com.applandeo.materialcalendarview.listeners.OnDayClickListener
+import com.applandeo.materialcalendarview.utils.DateUtils.getCalendar
 import com.example.user.healthcalendar.Database.DbHelper
 import com.example.user.healthcalendar.EditEventActivity
 
@@ -35,7 +40,10 @@ class FragmentCalendar : Fragment() {
     private var mListener: OnFragmentInteractionListener? = null
 
     var calendarView : CalendarView? = null
-    var dateDisplay : TextView? = null
+    var calendarTextView : TextView? = null
+    var eventDays : List<EventDay>? = ArrayList<EventDay>()
+    //var calendarView : CalendarView? = null
+    //var dateDisplay : TextView? = null
 
     var cursor : Cursor? = null
     var dbHelper : DbHelper? = null
@@ -64,13 +72,30 @@ class FragmentCalendar : Fragment() {
         })
 
         calendarView = view!!.findViewById(R.id.calendarView)
+        calendarView?.setDate(getCalendar())
+        previewNote(EventDay(getCalendar()))
+
+        calendarTextView = view!!.findViewById(R.id.calendarTextView)
+        calendarTextView?.setMovementMethod(ScrollingMovementMethod())
+
+        calendarView?.setOnDayClickListener(OnDayClickListener() {
+            eventDay ->
+            previewNote(eventDay)
+        })
+
+        /*calendarView = view!!.findViewById(R.id.calendarView)
         dateDisplay = view!!.findViewById(R.id.dateDisplay)
         //dateDisplay?.setText("Date: ")
 
         calendarView?.setOnDateChangeListener(CalendarView.OnDateChangeListener() {
             calendarView, year, month, day ->
             dateDisplay?.setText("Date: " + day + "/" + (month + 1) + "/" + year)
-        })
+        })*/
+    }
+
+    fun previewNote(eventDay: EventDay) {
+        var dateString : String = eventDay.calendar.time.toString()
+        calendarTextView?.setText(dateString)
     }
 
     fun goToEditEventActivity() {
