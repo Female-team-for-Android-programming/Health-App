@@ -1,5 +1,7 @@
 package com.example.user.healthcalendar
 
+import android.app.Dialog
+import android.app.TimePickerDialog
 import android.content.ContentValues
 import android.database.Cursor
 import android.support.v7.app.AppCompatActivity
@@ -9,6 +11,7 @@ import android.view.View
 import android.widget.*
 import com.example.user.healthcalendar.Database.DatabaseContract
 import com.example.user.healthcalendar.Database.DbHelper
+import java.text.SimpleDateFormat
 
 
 class EditEventActivity : AppCompatActivity() {
@@ -20,6 +23,11 @@ class EditEventActivity : AppCompatActivity() {
     var etComment: EditText? = null
 
     var dbHelper: DbHelper? = null
+
+    var DIALOG_TIME = 1
+    var myHour = 14
+    var myMinute = 35
+    var timeTextView: TextView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,7 +57,35 @@ class EditEventActivity : AppCompatActivity() {
             Log.i("this id = ", id.toString())
             //editEvent(id)
         }
+
+        timeTextView = findViewById<TextView>(R.id.event_time)
+        timeTextView!!.setOnClickListener(View.OnClickListener {
+            onClickTime()
+        })
+
     }
+    public fun onClickTime() {
+
+         showDialog(DIALOG_TIME)
+    }
+
+    override fun onCreateDialog(id: Int): Dialog {
+
+        if (id == DIALOG_TIME) {
+            var tpd : TimePickerDialog = TimePickerDialog(this, myCallBack, myHour, myMinute, true)
+            return tpd
+        }
+
+        return super.onCreateDialog(id)
+    }
+
+    var myCallBack : TimePickerDialog.OnTimeSetListener = TimePickerDialog.OnTimeSetListener(
+            fun(view: TimePicker, hourOfDay: Int, minute: Int) {
+                myHour = hourOfDay
+                myMinute = minute
+                timeTextView!!.setText(myHour.toString() + ":" + myMinute );
+            }
+    )
 
     //TODO : The code below was attempt to set selection of doctors in database to spinner
     //TODO : it does not work and the whole app restarts after clicking submit event button :)
