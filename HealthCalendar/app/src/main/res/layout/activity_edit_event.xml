@@ -74,6 +74,7 @@
                     android:layout_weight="1.4"
                     android:background="#F5F2F6"
                     android:hint="Дата"
+                    android:clickable="true"
                     android:imeOptions="actionNext"
                     android:inputType="date"
                     android:paddingLeft="10dp"

@@ -1,5 +1,6 @@
 package com.example.user.healthcalendar
 
+import android.app.DatePickerDialog
 import android.app.Dialog
 import android.app.TimePickerDialog
 import android.content.ContentValues
@@ -11,6 +12,7 @@ import android.view.View
 import android.widget.*
 import com.example.user.healthcalendar.Database.DatabaseContract
 import com.example.user.healthcalendar.Database.DbHelper
+import org.w3c.dom.Text
 import java.text.SimpleDateFormat
 
 
@@ -25,9 +27,16 @@ class EditEventActivity : AppCompatActivity() {
     var dbHelper: DbHelper? = null
 
     var DIALOG_TIME = 1
-    var myHour = 14
-    var myMinute = 35
+    var myHour = 3
+    var myMinute = 33
     var timeTextView: TextView? = null
+
+
+    var DIALOG_DATE = 2
+    var myYear = 2018
+    var myMonth = 5
+    var myDay = 4
+    var dateTextView: TextView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,8 +46,6 @@ class EditEventActivity : AppCompatActivity() {
 
 
         etDoctor = findViewById(R.id.event_doctor_spinner)
-        etDate = findViewById(R.id.event_date)
-        etTime = findViewById(R.id.event_time)
         etComment = findViewById(R.id.event_comment)
 
 
@@ -63,10 +70,19 @@ class EditEventActivity : AppCompatActivity() {
             onClickTime()
         })
 
-    }
-    public fun onClickTime() {
+        dateTextView = findViewById<TextView>(R.id.event_date)
+        dateTextView!!.setOnClickListener(View.OnClickListener {
+            onClickDate()
+        })
 
+    }
+
+    public fun onClickTime() {
          showDialog(DIALOG_TIME)
+    }
+
+    public fun onClickDate() {
+        showDialog(DIALOG_DATE)
     }
 
     override fun onCreateDialog(id: Int): Dialog {
@@ -74,6 +90,18 @@ class EditEventActivity : AppCompatActivity() {
         if (id == DIALOG_TIME) {
             var tpd : TimePickerDialog = TimePickerDialog(this, myCallBack, myHour, myMinute, true)
             return tpd
+        }
+
+        if (id == DIALOG_DATE) {
+            //Log.i("mmm","URA!!!!!")
+            var datePickerDate : DatePickerDialog
+                    = DatePickerDialog(this,
+                    dateCallBack,
+                    myYear,
+                    myMonth,
+                    myDay
+            )
+            return datePickerDate
         }
 
         return super.onCreateDialog(id)
@@ -84,6 +112,18 @@ class EditEventActivity : AppCompatActivity() {
                 myHour = hourOfDay
                 myMinute = minute
                 timeTextView!!.setText(myHour.toString() + ":" + myMinute );
+            }
+    )
+
+
+    var dateCallBack : DatePickerDialog.OnDateSetListener = DatePickerDialog.OnDateSetListener(
+            fun(view: DatePicker, year : Int, month: Int, day: Int) {
+                myYear = year
+                myMonth = month
+                myDay = day
+                dateTextView!!.setText(myDay.toString()
+                        + "/" + myMonth
+                        + "/" + myYear )
             }
     )
 
