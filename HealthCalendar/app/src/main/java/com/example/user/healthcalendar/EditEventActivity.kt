@@ -27,15 +27,15 @@ class EditEventActivity : AppCompatActivity() {
     var dbHelper: DbHelper? = null
 
     var DIALOG_TIME = 1
-    var myHour = 3
-    var myMinute = 33
+    var hourTextView = 3
+    var minuteTextView = 33
     var timeTextView: TextView? = null
 
 
     var DIALOG_DATE = 2
-    var myYear = 2018
-    var myMonth = 5
-    var myDay = 4
+    var yearTextView = 2018
+    var monthTextView = 5
+    var dayTextView = 4
     var dateTextView: TextView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,6 +46,8 @@ class EditEventActivity : AppCompatActivity() {
 
 
         etDoctor = findViewById(R.id.event_doctor_spinner)
+        etDate = findViewById(R.id.event_date)
+        etTime = findViewById(R.id.event_time)
         etComment = findViewById(R.id.event_comment)
 
 
@@ -88,43 +90,55 @@ class EditEventActivity : AppCompatActivity() {
     override fun onCreateDialog(id: Int): Dialog {
 
         if (id == DIALOG_TIME) {
-            var tpd : TimePickerDialog = TimePickerDialog(this, myCallBack, myHour, myMinute, true)
+
+            var tpd : TimePickerDialog
+                    = TimePickerDialog(this,
+                    timeCallBack,
+                    hourTextView,
+                    minuteTextView,
+                    true)
+
             return tpd
         }
 
         if (id == DIALOG_DATE) {
-            //Log.i("mmm","URA!!!!!")
+
             var datePickerDate : DatePickerDialog
                     = DatePickerDialog(this,
                     dateCallBack,
-                    myYear,
-                    myMonth,
-                    myDay
-            )
+                    yearTextView,
+                    monthTextView,
+                    dayTextView)
+
             return datePickerDate
         }
 
         return super.onCreateDialog(id)
+
     }
 
-    var myCallBack : TimePickerDialog.OnTimeSetListener = TimePickerDialog.OnTimeSetListener(
+    var timeCallBack : TimePickerDialog.OnTimeSetListener = TimePickerDialog.OnTimeSetListener(
+
             fun(view: TimePicker, hourOfDay: Int, minute: Int) {
-                myHour = hourOfDay
-                myMinute = minute
-                timeTextView!!.setText(myHour.toString() + ":" + myMinute );
+                hourTextView = hourOfDay
+                minuteTextView = minute
+                timeTextView!!.setText(hourTextView.toString() + ":" + minuteTextView )
             }
+
     )
 
 
     var dateCallBack : DatePickerDialog.OnDateSetListener = DatePickerDialog.OnDateSetListener(
+
             fun(view: DatePicker, year : Int, month: Int, day: Int) {
-                myYear = year
-                myMonth = month
-                myDay = day
-                dateTextView!!.setText(myDay.toString()
-                        + "/" + myMonth
-                        + "/" + myYear )
+                yearTextView = year
+                monthTextView = month
+                dayTextView = day
+                dateTextView!!.setText(dayTextView.toString()
+                        + "/" + monthTextView
+                        + "/" + yearTextView )
             }
+
     )
 
     //TODO : The code below was attempt to set selection of doctors in database to spinner
@@ -235,6 +249,7 @@ class EditEventActivity : AppCompatActivity() {
 
         var date = etDate!!.getText().toString()
         var time = etTime!!.getText().toString()
+
         var comment = etComment!!.getText().toString()
         var doctor = parserDocotorSpinner(doctorSpinnerString)
 
