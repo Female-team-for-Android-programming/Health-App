@@ -12,16 +12,15 @@ import android.view.View
 import android.widget.*
 import com.example.user.healthcalendar.Database.DatabaseContract
 import com.example.user.healthcalendar.Database.DbHelper
-import org.w3c.dom.Text
-import java.text.SimpleDateFormat
+import java.util.*
 
 
 class EditEventActivity : AppCompatActivity() {
     var submit: Button? = null
 
     var etDoctor: Spinner? = null
-    var etDate: EditText? = null
-    var etTime: EditText? = null
+    /*var etDate: EditText? = null
+    var etTime: EditText? = null*/
     var etComment: EditText? = null
 
     var dbHelper: DbHelper? = null
@@ -45,10 +44,21 @@ class EditEventActivity : AppCompatActivity() {
         dbHelper = DbHelper(this)
 
 
+        var now = Calendar.getInstance()
+        hourTextView = now.get(Calendar.HOUR_OF_DAY)
+        minuteTextView = now.get(Calendar.MINUTE)
+
+        yearTextView = now.get(Calendar.YEAR)
+        monthTextView = now.get(Calendar.MONTH)
+        dayTextView = now.get(Calendar.DAY_OF_MONTH)
+
+
         etDoctor = findViewById(R.id.event_doctor_spinner)
-        etDate = findViewById(R.id.event_date)
-        etTime = findViewById(R.id.event_time)
+        /*etDate = findViewById(R.id.event_date)
+        etTime = findViewById(R.id.event_time)*/
         etComment = findViewById(R.id.event_comment)
+        timeTextView = findViewById(R.id.event_time)
+        dateTextView = findViewById(R.id.event_date)
 
 
         loadSpinnerData()
@@ -67,12 +77,12 @@ class EditEventActivity : AppCompatActivity() {
             //editEvent(id)
         }
 
-        timeTextView = findViewById<TextView>(R.id.event_time)
+
         timeTextView!!.setOnClickListener(View.OnClickListener {
             onClickTime()
         })
 
-        dateTextView = findViewById<TextView>(R.id.event_date)
+
         dateTextView!!.setOnClickListener(View.OnClickListener {
             onClickDate()
         })
@@ -122,7 +132,8 @@ class EditEventActivity : AppCompatActivity() {
             fun(view: TimePicker, hourOfDay: Int, minute: Int) {
                 hourTextView = hourOfDay
                 minuteTextView = minute
-                timeTextView!!.setText(hourTextView.toString() + ":" + minuteTextView )
+                var timeString = hourTextView.toString() + ":" + minuteTextView.toString()
+                timeTextView!!.setText(timeString)
             }
 
     )
@@ -132,11 +143,12 @@ class EditEventActivity : AppCompatActivity() {
 
             fun(view: DatePicker, year : Int, month: Int, day: Int) {
                 yearTextView = year
-                monthTextView = month
+                //TODO : month + 1 because it counts from 0
+                //TODO : maybe need to do something more sophisticated???
+                monthTextView = month + 1
                 dayTextView = day
-                dateTextView!!.setText(dayTextView.toString()
-                        + "/" + monthTextView
-                        + "/" + yearTextView )
+                var dateString = dayTextView.toString() + "/" + monthTextView.toString() + "/" + yearTextView.toString()
+                dateTextView!!.setText(dateString)
             }
 
     )
@@ -221,7 +233,7 @@ class EditEventActivity : AppCompatActivity() {
 
     }
 
-    fun parserDocotorSpinner(st: String):Int{
+    fun parserDoctorSpinner(st: String):Int{
 
         var ans: String = ""
         var k: Int
@@ -247,11 +259,11 @@ class EditEventActivity : AppCompatActivity() {
 
         var doctorSpinnerString = etDoctor!!.selectedItem.toString()
 
-        var date = etDate!!.getText().toString()
-        var time = etTime!!.getText().toString()
+        var date = dateTextView!!.getText().toString()
+        var time = timeTextView!!.getText().toString()
 
         var comment = etComment!!.getText().toString()
-        var doctor = parserDocotorSpinner(doctorSpinnerString)
+        var doctor = parserDoctorSpinner(doctorSpinnerString)
 
         var database = dbHelper!!.getWritableDatabase()
 
@@ -263,6 +275,30 @@ class EditEventActivity : AppCompatActivity() {
         contentValues.put(DatabaseContract.EventsColumns.COMMENT, comment)
 
         database.insert(DatabaseContract.EventsColumns.TABLE_NAME, null, contentValues)
+
+
+        //TODO : it crushes after the query to EventsColumns and I don't know why
+        /*var cursor : Cursor = database.query(DatabaseContract.EventsColumns.TABLE_NAME, null, null, null, null, null, null)
+
+        if (cursor.moveToFirst()) {
+            var idIndex: Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns._ID)
+            var doctorIndex = cursor.getColumnIndex(DatabaseContract.EventsColumns.DOCTOR_ID)
+            var dateIndex = cursor.getColumnIndex(DatabaseContract.EventsColumns.DATE)
+            var timeIndex = cursor.getColumnIndex(DatabaseContract.EventsColumns.TIME)
+            var commentIndex = cursor.getColumnIndex(DatabaseContract.EventsColumns.COMMENT)
+
+            do {
+                Log.i("mLog", "ID = " + cursor.getInt(idIndex)
+                        + ", doctor = " + cursor.getString(doctorIndex)
+                        + ", date = " + cursor.getString(dateIndex)
+                        + ", time = " + cursor.getString(timeIndex)
+                        + ", comment = " + cursor.getString(commentIndex))
+            } while (cursor.moveToNext())
+        } else {
+            Log.i("mLog", "0 rows")
+        }
+        cursor.close()*/
+
 
         dbHelper?.close()
 
