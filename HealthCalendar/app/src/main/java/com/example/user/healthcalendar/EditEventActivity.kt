@@ -243,15 +243,10 @@ class EditEventActivity : AppCompatActivity() {
         var ans: String = ""
         var k: Int
 
-        for (i in (st.length-1) downTo 0 ){
-
-            if (st[i] == ' ') {
-                break
-            }
-            else {
-                ans = ans + st[i]
-            }
-        }
+        ((st.length-1) downTo 0)
+                .asSequence()
+                .takeWhile { st[it] != ' ' }
+                .forEach { ans = ans + st[it] }
 
         ans = ans.reversed()
 
@@ -283,7 +278,7 @@ class EditEventActivity : AppCompatActivity() {
 
 
         //TODO : it crushes after the query to EventsColumns and I don't know why
-        /*var cursor : Cursor = database.query(DatabaseContract.EventsColumns.TABLE_NAME, null, null, null, null, null, null)
+        var cursor : Cursor = database.query(DatabaseContract.EventsColumns.TABLE_NAME, null, null, null, null, null, null)
 
         if (cursor.moveToFirst()) {
             var idIndex: Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns._ID)
@@ -302,7 +297,7 @@ class EditEventActivity : AppCompatActivity() {
         } else {
             Log.i("mLog", "0 rows")
         }
-        cursor.close()*/
+        cursor.close()
 
 
         dbHelper?.close()

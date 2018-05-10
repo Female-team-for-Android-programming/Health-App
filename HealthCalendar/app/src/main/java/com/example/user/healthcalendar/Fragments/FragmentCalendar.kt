@@ -9,6 +9,7 @@ import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.text.method.ScrollingMovementMethod
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -69,7 +70,7 @@ class FragmentCalendar : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        val fab : FloatingActionButton = view!!.findViewById(R.id.fab_calendar)
+        val fab: FloatingActionButton = view!!.findViewById(R.id.fab_calendar)
         fab.setOnClickListener(View.OnClickListener {
             goToEditEventActivity()
         })
@@ -81,12 +82,11 @@ class FragmentCalendar : Fragment() {
         calendarTextView = view!!.findViewById(R.id.calendarTextView)
         calendarTextView?.setMovementMethod(ScrollingMovementMethod())
 
-        calendarView?.setOnDayClickListener(OnDayClickListener() {
-            eventDay ->
+        calendarView?.setOnDayClickListener(OnDayClickListener() { eventDay ->
             previewNote(eventDay)
         })
 
-        var eventDays : MutableList<EventDay>? = mutableListOf<EventDay>()
+        var eventDays: MutableList<EventDay>? = mutableListOf<EventDay>()
         /*val calendar : Calendar = Calendar.getInstance()
         eventDays?.add(EventDay(calendar, R.drawable.ic_event_icon))
         val calendar1 : Calendar = Calendar.getInstance()
@@ -104,12 +104,12 @@ class FragmentCalendar : Fragment() {
         eventDays?.add(EventDay(calendar, R.drawable.ic_event_icon))
         calendarView?.setEvents(eventDays)*/
 
-        val pattern : String = "dd/MM/yyyy"
-        val format : SimpleDateFormat = SimpleDateFormat(pattern)
-        val datesToSet = arrayOf<String>("10/05/2018", "11/05/2018", "11/05/2018", "12/05/2018","09/05/2018")
+        val pattern: String = "dd/MM/yyyy"
+        val format: SimpleDateFormat = SimpleDateFormat(pattern)
+        val datesToSet = arrayOf<String>("10/05/2018", "11/05/2018", "11/05/2018", "12/05/2018", "09/05/2018")
         for (i in 0..datesToSet.size - 1) {
-            var calendar : Calendar = Calendar.getInstance()
-            val date : Date = format.parse(datesToSet[i])
+            var calendar: Calendar = Calendar.getInstance()
+            val date: Date = format.parse(datesToSet[i])
             calendar.setTime(date)
             eventDays?.add(EventDay(calendar, R.drawable.ic_event_icon))
         }
@@ -125,8 +125,70 @@ class FragmentCalendar : Fragment() {
         })*/
     }
 
+    fun monthNumber(m: String): String{
+
+        if (m == "Jan") return "01"
+        if (m == "Feb") return "02"
+        if (m == "Mar") return "03"
+        if (m == "Apr") return "04"
+        if (m == "May") return "05"
+        if (m == "Jun") return "06"
+        if (m == "Jul") return "07"
+        if (m == "Aug") return "08"
+        if (m == "Sep") return "09"
+        if (m == "Oct") return "10"
+        if (m == "Nov") return "11"
+        if (m == "Dec") return "12"
+
+        return "0"
+
+    }
+
+    fun parserCalendarTime(t: String): String {
+
+        var k: Int = 0
+
+        var day: String = ""
+        var month: String = ""
+        var year: String = ""
+
+        var ans : String = ""
+
+        var st: String = ""
+
+        var time = t + ' '
+
+        for(s in time){
+
+            if (s == ' '){
+                k++
+
+                if (k == 2){
+                    month = monthNumber(st)
+                }
+                else if (k == 3){
+                    day = st
+                }
+                else if (k == 6){
+                    year = st
+                }
+
+                st = ""
+            }
+            else {
+
+                st = st + s
+
+            }
+        }
+        ans = day + '/' + month + '/' + year
+        return ans
+    }
+
     fun previewNote(eventDay: EventDay) {
         var dateString : String = eventDay.calendar.time.toString()
+        var s = parserCalendarTime(dateString)
+        Log.i("mmmmmm",s)
         calendarTextView?.setText(dateString)
     }
 
