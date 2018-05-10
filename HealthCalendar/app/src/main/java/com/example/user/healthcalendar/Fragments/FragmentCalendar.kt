@@ -24,6 +24,7 @@ import com.example.user.healthcalendar.Database.DbHelper
 import com.example.user.healthcalendar.EditEventActivity
 
 import com.example.user.healthcalendar.R
+import kotlinx.android.synthetic.main.activity_edit_doctor.*
 import kotlinx.android.synthetic.main.fragment_calendar.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -200,6 +201,64 @@ class FragmentCalendar : Fragment() {
         calendarTextView?.setText(date)
     }
 
+    fun getDoctor(id: Int): String{
+
+        var database = dbHelper!!.getWritableDatabase()
+        var ans: String = ""
+
+        val query = "SELECT * FROM " + DatabaseContract.DoctorsColumns.TABLE_NAME +
+                " WHERE " + DatabaseContract.DoctorsColumns._ID + "='" + id + "'"
+
+        val cursor : Cursor = database.rawQuery(query, null)
+
+        if (cursor.moveToFirst()) {
+
+            var idIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns._ID)
+            var specialityIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.SPECIALITY)
+            var nameIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.NAME)
+            var surnameIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.SURNAME)
+            var fathersnameIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.FATHERSNAME)
+            var addressIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.ADDRESS)
+            var contactsIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.CONTACTS)
+            var commentIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.COMMENT)
+
+            do{
+
+                val id = cursor.getInt(idIndex)
+                val speciality = cursor.getString(specialityIndex)
+                val surname = cursor.getString(surnameIndex)
+                val name = cursor.getString(nameIndex)
+                val fathersname = cursor.getString(fathersnameIndex)
+                val comment = cursor.getString(commentIndex)
+                val address = cursor.getString(addressIndex)
+                val contact = cursor.getString(contactsIndex)
+
+                ans = ans + speciality + " " +
+                        surname + " " +
+                        name + " " +
+                        fathersname + " "
+                if (address != null && address != "") ans =  ans + "\n" + "Адрес: " + address
+                if (contact != null && contact != "") ans= ans + "\n" + "Контакты: " + contacts
+                if (comment != null && comment != "") ans= ans + "\n" + "Комментарий: " + contacts
+
+                Log.i("mLog", "ID = " + cursor.getInt(idIndex)
+                        + ", speciality = " + cursor.getString(specialityIndex)
+                        + ", name = " + cursor.getString(nameIndex)
+                        + ", surname = " + cursor.getString(surnameIndex)
+                        + ", fathersname = " + cursor.getString(fathersnameIndex)
+                        + ", addressIndex = " + cursor.getString(addressIndex)
+                        + ", contactsIndex = " + cursor.getString(contactsIndex)
+                        + ", commentIndex = " + cursor.getString(commentIndex))
+
+            } while (cursor.moveToNext())
+
+        } else {
+            Log.i("mLog", "0 rows")
+        }
+
+        return ans
+    }
+
     fun getDBdata(selectedDay: String): String{
 
         var database = dbHelper!!.getWritableDatabase()
@@ -222,15 +281,19 @@ class FragmentCalendar : Fragment() {
 
                 val id = cursor.getInt(idIndex)
                 val doctorId = cursor.getString(doctorIdIndex)
+                val doctor = getDoctor(doctorId.toInt())
                 val date = cursor.getString(dateIndex)
                 val time = cursor.getString(timeIndex)
                 val comment = cursor.getString(commentIndex)
 
                 ans = ans + "ID = " + id + "\n" +
-                        "doctorId = " + doctorId + "\n" +
-                        "date = " + date + "\n" +
-                        "time = " + time + "\n" +
-                        "comment = " + comment + "\n\n"
+                        "Врач = " + doctor + "\n" +
+                        "Дата = " + date + "\n"
+
+                if (time != null && time != "") ans= ans  + "Время: "    + time + "\n"
+                if (comment != null && comment != "") ans= ans  + "Комментарий: " + contacts + "\n"
+
+                ans = ans + "\n"
 
                 Log.i("mLog", "ID = " + cursor.getInt(idIndex)
                         + ", doctorId = " + cursor.getString(doctorIdIndex)
