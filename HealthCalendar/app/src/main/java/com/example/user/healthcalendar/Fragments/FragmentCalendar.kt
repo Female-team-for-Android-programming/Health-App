@@ -19,6 +19,7 @@ import com.applandeo.materialcalendarview.EventDay
 import com.applandeo.materialcalendarview.listeners.OnDayClickListener
 import com.applandeo.materialcalendarview.utils.DateUtils.getCalendar
 import com.applandeo.materialcalendarview.utils.DateUtils
+import com.example.user.healthcalendar.Database.DatabaseContract
 import com.example.user.healthcalendar.Database.DbHelper
 import com.example.user.healthcalendar.EditEventActivity
 
@@ -125,7 +126,7 @@ class FragmentCalendar : Fragment() {
         })*/
     }
 
-    fun monthNumber(m: String): String{
+    private fun monthNumber(m: String): String{
 
         if (m == "Jan") return "01"
         if (m == "Feb") return "02"
@@ -144,7 +145,7 @@ class FragmentCalendar : Fragment() {
 
     }
 
-    fun parserCalendarTime(t: String): String {
+    private fun parserCalendarTime(t: String): String {
 
         var k: Int = 0
 
@@ -186,10 +187,64 @@ class FragmentCalendar : Fragment() {
     }
 
     fun previewNote(eventDay: EventDay) {
+
         var dateString : String = eventDay.calendar.time.toString()
         var s = parserCalendarTime(dateString)
+
         Log.i("mmmmmm",s)
-        calendarTextView?.setText(dateString)
+
+        var date = getDBdata(s)
+
+        Log.i("DBDBDB",date)
+
+        calendarTextView?.setText(date)
+    }
+
+    fun getDBdata(selectedDay: String): String{
+
+        var database = dbHelper!!.getWritableDatabase()
+        var ans: String = ""
+
+        val query = "SELECT * FROM " + DatabaseContract.EventsColumns.TABLE_NAME +
+                " WHERE " + DatabaseContract.EventsColumns.DATE + "='" + selectedDay + "'"
+
+        val cursor : Cursor = database.rawQuery(query, null)
+
+        if (cursor.moveToFirst()) {
+
+            val idIndex: Int = cursor.getColumnIndex(DatabaseContract.EventsColumns._ID)
+            val doctorIdIndex: Int = cursor.getColumnIndex(DatabaseContract.EventsColumns.DOCTOR_ID)
+            val dateIndex: Int = cursor.getColumnIndex(DatabaseContract.EventsColumns.DATE)
+            val timeIndex: Int = cursor.getColumnIndex(DatabaseContract.EventsColumns.TIME)
+            val commentIndex: Int = cursor.getColumnIndex(DatabaseContract.EventsColumns.COMMENT)
+
+            do{
+
+                val id = cursor.getInt(idIndex)
+                val doctorId = cursor.getString(doctorIdIndex)
+                val date = cursor.getString(dateIndex)
+                val time = cursor.getString(timeIndex)
+                val comment = cursor.getString(commentIndex)
+
+                ans = ans + "ID = " + id + "\n" +
+                        "doctorId = " + doctorId + "\n" +
+                        "date = " + date + "\n" +
+                        "time = " + time + "\n" +
+                        "comment = " + comment + "\n\n"
+
+                Log.i("mLog", "ID = " + cursor.getInt(idIndex)
+                        + ", doctorId = " + cursor.getString(doctorIdIndex)
+                        + ", date = " + cursor.getString(dateIndex)
+                        + ", time = " + cursor.getString(timeIndex)
+                        + ", commentIndex = " + cursor.getString(commentIndex))
+
+            } while (cursor.moveToNext())
+
+        } else {
+            Log.i("mLog", "0 rows")
+        }
+
+        return ans
     }
 
     fun goToEditEventActivity() {
@@ -198,7 +253,7 @@ class FragmentCalendar : Fragment() {
     }
 
     fun goToEditEventActivity(id: Long) {
-        val intent : Intent = Intent(activity, EditEventActivity::class.java)
+        val intent = Intent(activity, EditEventActivity::class.java)
         intent.putExtra("eventId", id)
         startActivity(intent)
     }
@@ -247,8 +302,8 @@ class FragmentCalendar : Fragment() {
     companion object {
         // TODO: Rename parameter arguments, choose names that match
         // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-        private val ARG_PARAM1 = "param1"
-        private val ARG_PARAM2 = "param2"
+        private const val ARG_PARAM1 = "param1"
+        private const val ARG_PARAM2 = "param2"
 
         /**
          * Use this factory method to create a new instance of
@@ -262,8 +317,8 @@ class FragmentCalendar : Fragment() {
         fun newInstance(param1: String, param2: String): FragmentCalendar {
             val fragment = FragmentCalendar()
             val args = Bundle()
-            args.putString(ARG_PARAM1, param1)
-            args.putString(ARG_PARAM2, param2)
+            args.putString(this.ARG_PARAM1, param1)
+            args.putString(this.ARG_PARAM2, param2)
             fragment.arguments = args
             return fragment
         }
