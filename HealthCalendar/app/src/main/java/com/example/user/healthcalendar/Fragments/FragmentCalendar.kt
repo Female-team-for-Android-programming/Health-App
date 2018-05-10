@@ -17,11 +17,14 @@ import com.applandeo.materialcalendarview.CalendarView
 import com.applandeo.materialcalendarview.EventDay
 import com.applandeo.materialcalendarview.listeners.OnDayClickListener
 import com.applandeo.materialcalendarview.utils.DateUtils.getCalendar
+import com.applandeo.materialcalendarview.utils.DateUtils
 import com.example.user.healthcalendar.Database.DbHelper
 import com.example.user.healthcalendar.EditEventActivity
 
 import com.example.user.healthcalendar.R
 import kotlinx.android.synthetic.main.fragment_calendar.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * A simple [Fragment] subclass.
@@ -41,7 +44,7 @@ class FragmentCalendar : Fragment() {
 
     var calendarView : CalendarView? = null
     var calendarTextView : TextView? = null
-    var eventDays : List<EventDay>? = ArrayList<EventDay>()
+
     //var calendarView : CalendarView? = null
     //var dateDisplay : TextView? = null
 
@@ -82,6 +85,35 @@ class FragmentCalendar : Fragment() {
             eventDay ->
             previewNote(eventDay)
         })
+
+        var eventDays : MutableList<EventDay>? = mutableListOf<EventDay>()
+        /*val calendar : Calendar = Calendar.getInstance()
+        eventDays?.add(EventDay(calendar, R.drawable.ic_event_icon))
+        val calendar1 : Calendar = Calendar.getInstance()
+        calendar1.add(Calendar.DAY_OF_MONTH, 5)
+        eventDays?.add(EventDay(calendar1, R.drawable.ic_event_icon))*/
+
+        /*val calendar : Calendar = Calendar.getInstance()
+        val pattern : String = "dd/MM/yyyy"
+        val format : SimpleDateFormat = SimpleDateFormat(pattern)
+        val date : Date = format.parse("18/05/2018")
+        calendar.setTime(date)
+        eventDays?.add(EventDay(calendar, R.drawable.ic_event_icon))
+        val date2 : Date = format.parse("20/05/2018")
+        calendar.setTime(date2)
+        eventDays?.add(EventDay(calendar, R.drawable.ic_event_icon))
+        calendarView?.setEvents(eventDays)*/
+
+        val pattern : String = "dd/MM/yyyy"
+        val format : SimpleDateFormat = SimpleDateFormat(pattern)
+        val datesToSet = arrayOf<String>("10/05/2018", "11/05/2018", "11/05/2018", "12/05/2018","09/05/2018")
+        for (i in 0..datesToSet.size - 1) {
+            var calendar : Calendar = Calendar.getInstance()
+            val date : Date = format.parse(datesToSet[i])
+            calendar.setTime(date)
+            eventDays?.add(EventDay(calendar, R.drawable.ic_event_icon))
+        }
+        calendarView?.setEvents(eventDays)
 
         /*calendarView = view!!.findViewById(R.id.calendarView)
         dateDisplay = view!!.findViewById(R.id.dateDisplay)

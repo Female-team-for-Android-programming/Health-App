@@ -10,11 +10,11 @@
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:type="one_day_picker"
         app:headerColor="@color/colorCenterGradient"
         app:selectionColor="@color/colorAccent"
         app:abbreviationsBarColor="@color/colorStartGradient"
         app:todayLabelColor="@color/colorAccent" />
+
 
     <TextView
         android:id="@+id/calendarTextView"

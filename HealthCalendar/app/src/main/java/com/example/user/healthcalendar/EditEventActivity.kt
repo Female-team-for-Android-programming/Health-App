@@ -12,6 +12,7 @@ import android.view.View
 import android.widget.*
 import com.example.user.healthcalendar.Database.DatabaseContract
 import com.example.user.healthcalendar.Database.DbHelper
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -147,7 +148,11 @@ class EditEventActivity : AppCompatActivity() {
                 //TODO : maybe need to do something more sophisticated???
                 monthTextView = month + 1
                 dayTextView = day
-                var dateString = dayTextView.toString() + "/" + monthTextView.toString() + "/" + yearTextView.toString()
+
+                val yearString = yearTextView.toString()
+                val monthString = if (monthTextView < 10) "0" + monthTextView.toString() else monthTextView.toString()
+                val dayString = if (dayTextView < 10) "0" + dayTextView.toString() else dayTextView.toString()
+                var dateString = dayString + "/" + monthString + "/" + yearString
                 dateTextView!!.setText(dateString)
             }
 
