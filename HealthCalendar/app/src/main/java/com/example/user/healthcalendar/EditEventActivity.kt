@@ -133,7 +133,10 @@ class EditEventActivity : AppCompatActivity() {
             fun(view: TimePicker, hourOfDay: Int, minute: Int) {
                 hourTextView = hourOfDay
                 minuteTextView = minute
-                var timeString = hourTextView.toString() + ":" + minuteTextView.toString()
+
+                val hourString = if (hourTextView < 10) "0" + hourTextView.toString() else hourTextView.toString()
+                val minString = if (minuteTextView < 10) "0" + minuteTextView.toString() else minuteTextView.toString()
+                var timeString = hourString + ":" + minString
                 timeTextView!!.setText(timeString)
             }
 
