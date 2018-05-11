@@ -1,12 +1,10 @@
 package com.example.user.healthcalendar.Fragments
 
-import android.content.Context
 import android.content.Intent
 import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
-import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.text.method.ScrollingMovementMethod
 import android.util.Log
@@ -16,16 +14,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.applandeo.materialcalendarview.CalendarView
 import com.applandeo.materialcalendarview.EventDay
-import com.applandeo.materialcalendarview.listeners.OnDayClickListener
 import com.applandeo.materialcalendarview.utils.DateUtils.getCalendar
-import com.applandeo.materialcalendarview.utils.DateUtils
 import com.example.user.healthcalendar.Database.DatabaseContract
 import com.example.user.healthcalendar.Database.DbHelper
 import com.example.user.healthcalendar.EditEventActivity
 
 import com.example.user.healthcalendar.R
-import kotlinx.android.synthetic.main.activity_edit_doctor.*
-import kotlinx.android.synthetic.main.fragment_calendar.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -48,12 +42,8 @@ class FragmentCalendar : Fragment() {
     var calendarView : CalendarView? = null
     var calendarTextView : TextView? = null
 
-    //var calendarView : CalendarView? = null
-    //var dateDisplay : TextView? = null
-
-    var cursor : Cursor? = null
-    var dbHelper : DbHelper? = null
-    //var simpleCursorAdapter : SimpleCursorAdapter? = null
+    private var cursor : Cursor? = null
+    private var dbHelper : DbHelper? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,7 +63,7 @@ class FragmentCalendar : Fragment() {
     override fun onResume() {
         super.onResume()
         val fab: FloatingActionButton = view!!.findViewById(R.id.fab_calendar)
-        fab.setOnClickListener(View.OnClickListener {
+        fab.setOnClickListener({
             goToEditEventActivity()
         })
 
@@ -82,49 +72,24 @@ class FragmentCalendar : Fragment() {
         previewNote(EventDay(getCalendar()))
 
         calendarTextView = view!!.findViewById(R.id.calendarTextView)
-        calendarTextView?.setMovementMethod(ScrollingMovementMethod())
+        calendarTextView?.movementMethod = ScrollingMovementMethod()
 
-        calendarView?.setOnDayClickListener(OnDayClickListener() { eventDay ->
+        calendarView?.setOnDayClickListener({ eventDay ->
             previewNote(eventDay)
         })
 
-        var eventDays: MutableList<EventDay>? = mutableListOf<EventDay>()
-        /*val calendar : Calendar = Calendar.getInstance()
-        eventDays?.add(EventDay(calendar, R.drawable.ic_event_icon))
-        val calendar1 : Calendar = Calendar.getInstance()
-        calendar1.add(Calendar.DAY_OF_MONTH, 5)
-        eventDays?.add(EventDay(calendar1, R.drawable.ic_event_icon))*/
+        var eventDays: MutableList<EventDay>? = mutableListOf()
 
-        /*val calendar : Calendar = Calendar.getInstance()
-        val pattern : String = "dd/MM/yyyy"
-        val format : SimpleDateFormat = SimpleDateFormat(pattern)
-        val date : Date = format.parse("18/05/2018")
-        calendar.setTime(date)
-        eventDays?.add(EventDay(calendar, R.drawable.ic_event_icon))
-        val date2 : Date = format.parse("20/05/2018")
-        calendar.setTime(date2)
-        eventDays?.add(EventDay(calendar, R.drawable.ic_event_icon))
-        calendarView?.setEvents(eventDays)*/
-
-        val pattern: String = "dd/MM/yyyy"
-        val format: SimpleDateFormat = SimpleDateFormat(pattern)
-        val datesToSet = arrayOf<String>("10/05/2018", "11/05/2018", "11/05/2018", "12/05/2018", "09/05/2018")
-        for (i in 0..datesToSet.size - 1) {
-            var calendar: Calendar = Calendar.getInstance()
+        val pattern = "dd/MM/yyyy"
+        val format = SimpleDateFormat(pattern, Locale.US)
+        val datesToSet = arrayOf("10/05/2018", "11/05/2018", "11/05/2018", "12/05/2018", "09/05/2018")
+        for (i in 0 until datesToSet.size) {
+            val calendar: Calendar = Calendar.getInstance()
             val date: Date = format.parse(datesToSet[i])
-            calendar.setTime(date)
+            calendar.time = date
             eventDays?.add(EventDay(calendar, R.drawable.ic_event_icon))
         }
         calendarView?.setEvents(eventDays)
-
-        /*calendarView = view!!.findViewById(R.id.calendarView)
-        dateDisplay = view!!.findViewById(R.id.dateDisplay)
-        //dateDisplay?.setText("Date: ")
-
-        calendarView?.setOnDateChangeListener(CalendarView.OnDateChangeListener() {
-            calendarView, year, month, day ->
-            dateDisplay?.setText("Date: " + day + "/" + (month + 1) + "/" + year)
-        })*/
     }
 
     private fun monthNumber(m: String): String{
@@ -148,63 +113,53 @@ class FragmentCalendar : Fragment() {
 
     private fun parserCalendarTime(t: String): String {
 
-        var k: Int = 0
+        var k = 0
 
-        var day: String = ""
-        var month: String = ""
-        var year: String = ""
+        var day = ""
+        var month = ""
+        var year = ""
 
-        var ans : String = ""
+        var st = ""
 
-        var st: String = ""
+        val time = "$t "
 
-        var time = t + ' '
+        for(s in time) {
 
-        for(s in time){
-
-            if (s == ' '){
+            if (s == ' ') {
                 k++
 
-                if (k == 2){
-                    month = monthNumber(st)
-                }
-                else if (k == 3){
-                    day = st
-                }
-                else if (k == 6){
-                    year = st
+                when (k) {
+                    2 -> month = monthNumber(st)
+                    3 -> day = st
+                    6 -> year = st
                 }
 
                 st = ""
-            }
-            else {
-
-                st = st + s
-
+            } else {
+                st += s
             }
         }
-        ans = day + '/' + month + '/' + year
-        return ans
+        return "$day/$month/$year"
     }
 
-    fun previewNote(eventDay: EventDay) {
+    private fun previewNote(eventDay: EventDay) {
 
-        var dateString : String = eventDay.calendar.time.toString()
-        var s = parserCalendarTime(dateString)
+        val dateString : String = eventDay.calendar.time.toString()
+        val s = parserCalendarTime(dateString)
 
         Log.i("mmmmmm",s)
 
-        var date = getDBdata(s)
+        val date = getDBdata(s)
 
         Log.i("DBDBDB",date)
 
-        calendarTextView?.setText(date)
+        calendarTextView?.text = date
     }
 
-    fun getDoctor(id: Int): String{
+    private fun getDoctor(id: Int): String{
 
-        var database = dbHelper!!.getWritableDatabase()
-        var ans: String = ""
+        val database = dbHelper!!.readableDatabase
+        var ans = ""
 
         val query = "SELECT * FROM " + DatabaseContract.DoctorsColumns.TABLE_NAME +
                 " WHERE " + DatabaseContract.DoctorsColumns._ID + "='" + id + "'"
@@ -213,42 +168,42 @@ class FragmentCalendar : Fragment() {
 
         if (cursor.moveToFirst()) {
 
-            var idIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns._ID)
-            var specialityIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.SPECIALITY)
-            var nameIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.NAME)
-            var surnameIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.SURNAME)
-            var fathersnameIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.FATHERSNAME)
-            var addressIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.ADDRESS)
-            var contactsIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.CONTACTS)
-            var commentIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.COMMENT)
+            val idIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns._ID)
+            val specialityIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.SPECIALITY)
+            val nameIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.NAME)
+            val surnameIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.SURNAME)
+            val fathersnameIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.FATHERSNAME)
+            val addressIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.ADDRESS)
+            val contactsIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.CONTACTS)
+            val commentIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.COMMENT)
 
             do{
 
-                val id = cursor.getInt(idIndex)
+                val docId = cursor.getInt(idIndex)
                 val speciality = cursor.getString(specialityIndex)
-                val surname = cursor.getString(surnameIndex)
                 val name = cursor.getString(nameIndex)
+                val surname = cursor.getString(surnameIndex)
                 val fathersname = cursor.getString(fathersnameIndex)
-                val comment = cursor.getString(commentIndex)
                 val address = cursor.getString(addressIndex)
-                val contact = cursor.getString(contactsIndex)
+                val contacts = cursor.getString(contactsIndex)
+                val comment = cursor.getString(commentIndex)
 
                 ans = ans + speciality + " " +
                         surname + " " +
                         name + " " +
                         fathersname + " "
-                if (address != null && address != "") ans =  ans + "\n" + "Адрес: " + address
-                if (contact != null && contact != "") ans= ans + "\n" + "Контакты: " + contacts
-                if (comment != null && comment != "") ans= ans + "\n" + "Комментарий: " + contacts
+                if (address != null && address != "") ans = "$ans\nАдрес: $address"
+                if (contacts != null && contacts != "") ans = "$ans\nКонтакты: $contacts"
+                if (comment != null && comment != "") ans= "$ans\nКомментарий: $comment"
 
-                Log.i("mLog", "ID = " + cursor.getInt(idIndex)
-                        + ", speciality = " + cursor.getString(specialityIndex)
-                        + ", name = " + cursor.getString(nameIndex)
-                        + ", surname = " + cursor.getString(surnameIndex)
-                        + ", fathersname = " + cursor.getString(fathersnameIndex)
-                        + ", addressIndex = " + cursor.getString(addressIndex)
-                        + ", contactsIndex = " + cursor.getString(contactsIndex)
-                        + ", commentIndex = " + cursor.getString(commentIndex))
+                Log.i("mLog", "ID = " + docId
+                        + ", speciality = " + speciality
+                        + ", name = " + name
+                        + ", surname = " + surname
+                        + ", fathersname = " + fathersname
+                        + ", address = " + address
+                        + ", contacts = " + contacts
+                        + ", comment = " + comment)
 
             } while (cursor.moveToNext())
 
@@ -259,10 +214,10 @@ class FragmentCalendar : Fragment() {
         return ans
     }
 
-    fun getDBdata(selectedDay: String): String{
+    private fun getDBdata(selectedDay: String): String{
 
-        var database = dbHelper!!.getWritableDatabase()
-        var ans: String = ""
+        val database = dbHelper!!.readableDatabase
+        var ans = ""
 
         val query = "SELECT * FROM " + DatabaseContract.EventsColumns.TABLE_NAME +
                 " WHERE " + DatabaseContract.EventsColumns.DATE + "='" + selectedDay + "'"
@@ -290,16 +245,20 @@ class FragmentCalendar : Fragment() {
                         "Врач = " + doctor + "\n" +
                         "Дата = " + date + "\n"
 
-                if (time != null && time != "") ans= ans  + "Время: "    + time + "\n"
-                if (comment != null && comment != "") ans= ans  + "Комментарий: " + contacts + "\n"
+                if (time != null && time != "") {
+                    ans = ans + "Время: " + time + "\n"
+                }
+                if (comment != null && comment != "") {
+                    ans = ans + "Комментарий: " + comment + "\n"
+                }
 
-                ans = ans + "\n"
+                ans += "\n"
 
-                Log.i("mLog", "ID = " + cursor.getInt(idIndex)
-                        + ", doctorId = " + cursor.getString(doctorIdIndex)
-                        + ", date = " + cursor.getString(dateIndex)
-                        + ", time = " + cursor.getString(timeIndex)
-                        + ", commentIndex = " + cursor.getString(commentIndex))
+                Log.i("mLog", "ID = " + id
+                        + ", doctorId = " + doctorId
+                        + ", date = " + date
+                        + ", time = " + time
+                        + ", comment = " + comment)
 
             } while (cursor.moveToNext())
 
@@ -310,8 +269,8 @@ class FragmentCalendar : Fragment() {
         return ans
     }
 
-    fun goToEditEventActivity() {
-        val intent : Intent = Intent(activity, EditEventActivity::class.java)
+    private fun goToEditEventActivity() {
+        val intent = Intent(activity, EditEventActivity::class.java)
         startActivity(intent)
     }
 
