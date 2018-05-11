@@ -1,10 +1,8 @@
 package com.example.user.healthcalendar.Fragments
 
-import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
-import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +10,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 
 import com.example.user.healthcalendar.R
-import kotlinx.android.synthetic.main.fragment_journal.*
 
 /**
  * A simple [Fragment] subclass.
@@ -43,7 +40,7 @@ class FragmentJournal : Fragment() {
         // Inflate the layout for this fragment
         val view : View = inflater!!.inflate(R.layout.fragment_journal, container, false)
         val fab : FloatingActionButton = view.findViewById(R.id.fab_journal)
-        fab.setOnClickListener(View.OnClickListener {
+        fab.setOnClickListener({
             Toast.makeText(activity.applicationContext, "Action for Journal Fragment", Toast.LENGTH_SHORT).show()
         })
 

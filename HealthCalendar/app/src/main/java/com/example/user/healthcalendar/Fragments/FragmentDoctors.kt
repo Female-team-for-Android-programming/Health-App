@@ -6,19 +6,15 @@ import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.*
 import android.widget.AdapterView
 import android.widget.ListView
 import android.widget.SimpleCursorAdapter
-import android.widget.Toast
 import com.example.user.healthcalendar.Database.DatabaseContract
 import com.example.user.healthcalendar.Database.DbHelper
 import com.example.user.healthcalendar.EditDoctorActivity
 import com.example.user.healthcalendar.R
 import android.widget.TextView
-
-
 
 
 /**
@@ -37,11 +33,11 @@ class FragmentDoctors : Fragment() {
 
     private var mListener: OnFragmentInteractionListener? = null
 
-    var doctorsListView : ListView? = null
-    var doctorsEmpty : TextView? = null
-    var cursor : Cursor? = null
-    var dbHelper : DbHelper? = null
-    var simpleCursorAdapter : SimpleCursorAdapter? = null
+    private var doctorsListView : ListView? = null
+    private var doctorsEmpty : TextView? = null
+    private var cursor : Cursor? = null
+    private var dbHelper : DbHelper? = null
+    private var simpleCursorAdapter : SimpleCursorAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,12 +56,12 @@ class FragmentDoctors : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        val fab : FloatingActionButton = getView()!!.findViewById(R.id.fab_doctors)
+        val fab : FloatingActionButton = view!!.findViewById(R.id.fab_doctors)
         fab.setOnClickListener({
             goToEditDoctorActivity()
         })
-        doctorsListView = getView()?.findViewById(R.id.doctors_listview)
-        doctorsEmpty = getView()?.findViewById(R.id.doctors_list_empty_textview)
+        doctorsListView = view?.findViewById(R.id.doctors_listview)
+        doctorsEmpty = view?.findViewById(R.id.doctors_list_empty_textview)
 
         showDBdata()
 
@@ -75,42 +71,42 @@ class FragmentDoctors : Fragment() {
 
     override fun onCreateContextMenu(menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
         super.onCreateContextMenu(menu, v, menuInfo)
-        val inflater = activity.getMenuInflater()
+        val inflater = activity.menuInflater
         inflater.inflate(R.menu.doctor_context_menu, menu)
     }
 
     override fun onContextItemSelected(item: MenuItem?): Boolean {
         val info = item?.menuInfo as AdapterView.AdapterContextMenuInfo
-        when (item.itemId) {
+        return when (item.itemId) {
             R.id.cm_edit -> {
                 goToEditDoctorActivity(info.id)
-                return true
+                true
             }
             R.id.cm_delete -> {
                 deleteDoctor(info.id)
-                return true
+                true
             }
-            else -> return super.onContextItemSelected(item)
+            else -> super.onContextItemSelected(item)
         }
     }
 
-    fun deleteDoctor(id: Long){
+    private fun deleteDoctor(id: Long){
 
-        var dbHelper: DbHelper? =  DbHelper(context)
-        var database = dbHelper!!.getWritableDatabase()
+        val dbHelper: DbHelper? =  DbHelper(context)
+        val database = dbHelper!!.writableDatabase
 
         database.delete(DatabaseContract.DoctorsColumns.TABLE_NAME,
                 DatabaseContract.DoctorsColumns._ID  +  "=" + id, null)
         showDBdata()
     }
 
-    fun goToEditDoctorActivity() {
-        val intent : Intent = Intent(activity, EditDoctorActivity::class.java)
+    private fun goToEditDoctorActivity() {
+        val intent = Intent(activity, EditDoctorActivity::class.java)
         startActivity(intent)
     }
 
-    fun goToEditDoctorActivity(id: Long) {
-        val intent : Intent = Intent(activity, EditDoctorActivity::class.java)
+    private fun goToEditDoctorActivity(id: Long) {
+        val intent = Intent(activity, EditDoctorActivity::class.java)
         intent.putExtra("doctorId",id)
         startActivity(intent)
     }
@@ -122,7 +118,7 @@ class FragmentDoctors : Fragment() {
 
     }
 
-    fun showDBdata() {
+    private fun showDBdata() {
         val database = dbHelper!!.readableDatabase
         cursor = database.query(DatabaseContract.DoctorsColumns.TABLE_NAME, null, null,
                 null, null, null, null)
