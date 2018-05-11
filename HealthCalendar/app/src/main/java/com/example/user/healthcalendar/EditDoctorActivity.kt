@@ -5,7 +5,6 @@ import android.database.Cursor
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
@@ -15,17 +14,17 @@ import com.example.user.healthcalendar.Database.DbHelper
 
 class EditDoctorActivity : AppCompatActivity() {
 
-    var submit: Button? = null
+    private var submit: Button? = null
 
-    var etSpeciality: Spinner? = null
-    var etName: EditText? = null
-    var etSurname: EditText? = null
-    var etFathersName: EditText? = null
-    var etAddress: EditText? = null
-    var etContacts: EditText? = null
-    var etComment: EditText? = null
+    private var etSpeciality: Spinner? = null
+    private var etName: EditText? = null
+    private var etSurname: EditText? = null
+    private var etFathersName: EditText? = null
+    private var etAddress: EditText? = null
+    private var etContacts: EditText? = null
+    private var etComment: EditText? = null
 
-    var dbHelper: DbHelper? = null
+    private var dbHelper: DbHelper? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,19 +32,19 @@ class EditDoctorActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_doctor)
 
-        val spinner : Spinner = findViewById<Spinner>(R.id.speciality)
-        val adapter : ArrayAdapter<CharSequence> = ArrayAdapter
+        val spinner : Spinner = findViewById(R.id.speciality)
+        val adapter = ArrayAdapter
                 .createFromResource(this, R.array.doctors_specialties, android.R.layout.simple_spinner_item)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinner.setAdapter(adapter)
+        spinner.adapter = adapter
 
-        etSpeciality = findViewById<Spinner>(R.id.speciality)
-        etName = findViewById<EditText>(R.id.name)
-        etSurname = findViewById<EditText>(R.id.surname)
-        etFathersName = findViewById<EditText>(R.id.fathersName)
-        etAddress = findViewById<EditText>(R.id.address)
-        etContacts = findViewById<EditText>(R.id.contacts)
-        etComment = findViewById<EditText>(R.id.comment)
+        etSpeciality = findViewById(R.id.speciality)
+        etName = findViewById(R.id.name)
+        etSurname = findViewById(R.id.surname)
+        etFathersName = findViewById(R.id.fathersName)
+        etAddress = findViewById(R.id.address)
+        etContacts = findViewById(R.id.contacts)
+        etComment = findViewById(R.id.comment)
 
         val intent = intent
 
@@ -63,7 +62,7 @@ class EditDoctorActivity : AppCompatActivity() {
 
     }
 
-    fun SetSpinnerSelection(spinner: Spinner, array: Array<String>, text: String) {
+    private fun setSpinnerSelection(spinner: Spinner, array: Array<String>, text: String) {
         for (i in array.indices) {
             if (array[i] == text) {
                 spinner.setSelection(i)
@@ -71,26 +70,26 @@ class EditDoctorActivity : AppCompatActivity() {
         }
     }
 
-    fun editDoctor(id:  Long){
+    private fun editDoctor(id:  Long){
 
         dbHelper = DbHelper(this)
-        var database = dbHelper!!.getWritableDatabase()
+        val database = dbHelper!!.writableDatabase
         val query = "SELECT * FROM " + DatabaseContract.DoctorsColumns.TABLE_NAME +
                 " WHERE " + DatabaseContract.DoctorsColumns._ID + "='" + id + "'"
         val cursor : Cursor = database.rawQuery(query, null)
 
         if (cursor.moveToFirst()) {
-            var idIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns._ID)
-            var specialityIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.SPECIALITY)
-            var nameIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.NAME)
-            var surnameIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.SURNAME)
-            var fathersnameIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.FATHERSNAME)
-            var addressIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.ADDRESS)
-            var contactsIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.CONTACTS)
-            var commentIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.COMMENT)
+            val idIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns._ID)
+            val specialityIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.SPECIALITY)
+            val nameIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.NAME)
+            val surnameIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.SURNAME)
+            val fathersnameIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.FATHERSNAME)
+            val addressIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.ADDRESS)
+            val contactsIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.CONTACTS)
+            val commentIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.COMMENT)
 
             do {
-                SetSpinnerSelection(etSpeciality!!, resources.getStringArray(R.array.doctors_specialties), cursor.getString(specialityIndex))
+                setSpinnerSelection(etSpeciality!!, resources.getStringArray(R.array.doctors_specialties), cursor.getString(specialityIndex))
                 etName!!.setText(cursor.getString(nameIndex))
                 etSurname!!.setText(cursor.getString(surnameIndex))
                 etFathersName!!.setText(cursor.getString(fathersnameIndex))
@@ -113,17 +112,17 @@ class EditDoctorActivity : AppCompatActivity() {
         }
         cursor.close()
 
-        submit = findViewById<Button>(R.id.submit_doctor)
-        submit!!.setOnClickListener(View.OnClickListener {
+        submit = findViewById(R.id.submit_doctor)
+        submit!!.setOnClickListener({
             submitDoctorChanges(id)
         })
 
     }
 
-    fun createDoctor(){
+    private fun createDoctor(){
 
-        submit = findViewById<Button>(R.id.submit_doctor)
-        submit!!.setOnClickListener(View.OnClickListener {
+        submit = findViewById(R.id.submit_doctor)
+        submit!!.setOnClickListener({
             submitNewDoctor()
         })
 
@@ -133,17 +132,17 @@ class EditDoctorActivity : AppCompatActivity() {
 
     private fun submitDoctorChanges(id: Long){
 
-        var speciality = etSpeciality!!.selectedItem.toString()
-        var name = etName!!.getText().toString()
-        var surname = etSurname!!.getText().toString()
-        var fathersName = etFathersName!!.getText().toString()
-        var address = etAddress!!.getText().toString()
-        var contacts = etContacts!!.getText().toString()
-        var comment = etComment!!.getText().toString()
+        val speciality = etSpeciality!!.selectedItem.toString()
+        val name = etName!!.text.toString()
+        val surname = etSurname!!.text.toString()
+        val fathersName = etFathersName!!.text.toString()
+        val address = etAddress!!.text.toString()
+        val contacts = etContacts!!.text.toString()
+        val comment = etComment!!.text.toString()
 
-        var database = dbHelper!!.getWritableDatabase()
+        val database = dbHelper!!.writableDatabase
 
-        var contentValues = ContentValues()
+        val contentValues = ContentValues()
 
         contentValues.put(DatabaseContract.DoctorsColumns.SPECIALITY, speciality)
         contentValues.put(DatabaseContract.DoctorsColumns.NAME, name)
@@ -164,17 +163,17 @@ class EditDoctorActivity : AppCompatActivity() {
 
     private fun submitNewDoctor() {
 
-        var speciality = etSpeciality!!.selectedItem.toString()
-        var name = etName!!.getText().toString()
-        var surname = etSurname!!.getText().toString()
-        var fathersName = etFathersName!!.getText().toString()
-        var address = etAddress!!.getText().toString()
-        var contacts = etContacts!!.getText().toString()
-        var comment = etComment!!.getText().toString()
+        val speciality = etSpeciality!!.selectedItem.toString()
+        val name = etName!!.text.toString()
+        val surname = etSurname!!.text.toString()
+        val fathersName = etFathersName!!.text.toString()
+        val address = etAddress!!.text.toString()
+        val contacts = etContacts!!.text.toString()
+        val comment = etComment!!.text.toString()
 
-        var database = dbHelper!!.getWritableDatabase()
+        val database = dbHelper!!.writableDatabase
 
-        var contentValues = ContentValues()
+        val contentValues = ContentValues()
 
         contentValues.put(DatabaseContract.DoctorsColumns.SPECIALITY, speciality)
         contentValues.put(DatabaseContract.DoctorsColumns.NAME, name)
