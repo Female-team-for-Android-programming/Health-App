@@ -22,6 +22,7 @@ import com.example.user.healthcalendar.EditEventActivity
 import com.example.user.healthcalendar.R
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.regex.Pattern
 
 /**
  * A simple [Fragment] subclass.
@@ -78,18 +79,42 @@ class FragmentCalendar : Fragment() {
             previewNote(eventDay)
         })
 
-        var eventDays: MutableList<EventDay>? = mutableListOf()
+        showEvents()
+    }
+
+    private fun showEvents() {
+        val eventDays: MutableList<EventDay>? = mutableListOf()
+
+        val database = dbHelper!!.readableDatabase
+        val cursor = database.query(DatabaseContract.EventsColumns.TABLE_NAME, null, null,
+                null, null, null, null)
+        if (cursor.count == 0) {
+            //there is no events yet
+            return
+        }
+        val datesList : MutableList<String>? = mutableListOf()
+        val datePattern : Pattern = Pattern.compile("\\d{2}/\\d{2}/\\d{4}")
+        if (cursor!!.moveToFirst()) {
+            val dateIndex : Int = cursor.getColumnIndex(DatabaseContract.EventsColumns.DATE)
+
+            do {
+                val date = cursor.getString(dateIndex)
+                if (datePattern.matcher(date).matches()) {
+                    datesList?.add(date)
+                }
+            } while (cursor.moveToNext())
+        }
 
         val pattern = "dd/MM/yyyy"
         val format = SimpleDateFormat(pattern, Locale.US)
-        val datesToSet = arrayOf("10/05/2018", "11/05/2018", "11/05/2018", "12/05/2018", "09/05/2018")
-        for (i in 0 until datesToSet.size) {
+        for (i in 0 until datesList!!.size) {
             val calendar: Calendar = Calendar.getInstance()
-            val date: Date = format.parse(datesToSet[i])
+            val date: Date = format.parse(datesList[i])
             calendar.time = date
             eventDays?.add(EventDay(calendar, R.drawable.ic_event_icon))
         }
         calendarView?.setEvents(eventDays)
+
     }
 
     private fun monthNumber(m: String): String{
@@ -149,11 +174,11 @@ class FragmentCalendar : Fragment() {
 
         Log.i("mmmmmm",s)
 
-        val date = getDBdata(s)
+        val data = getDBdata(s)
 
-        Log.i("DBDBDB",date)
+        Log.i("DBDBDB",data)
 
-        calendarTextView?.text = date
+        calendarTextView?.text = data
     }
 
     private fun getDoctor(id: Int): String{
@@ -164,7 +189,7 @@ class FragmentCalendar : Fragment() {
         val query = "SELECT * FROM " + DatabaseContract.DoctorsColumns.TABLE_NAME +
                 " WHERE " + DatabaseContract.DoctorsColumns._ID + "='" + id + "'"
 
-        val cursor : Cursor = database.rawQuery(query, null)
+        val cursor = database.rawQuery(query, null)
 
         if (cursor.moveToFirst()) {
 
