@@ -15,6 +15,13 @@ import com.example.user.healthcalendar.Database.DbHelper
 import com.example.user.healthcalendar.EditDoctorActivity
 import com.example.user.healthcalendar.R
 import android.widget.TextView
+import android.R.string.cancel
+import android.app.AlertDialog
+import android.widget.Toast
+import android.content.DialogInterface
+import java.nio.file.Files.delete
+
+
 
 
 /**
@@ -83,11 +90,35 @@ class FragmentDoctors : Fragment() {
                 true
             }
             R.id.cm_delete -> {
-                deleteDoctor(info.id)
+                showDeleteAlert(info.id)
+                //deleteDoctor(info.id)
                 true
             }
             else -> super.onContextItemSelected(item)
         }
+    }
+
+    private fun showDeleteAlert(id: Long) {
+        val alertDialog = AlertDialog.Builder(context)
+
+        alertDialog.setTitle("Подтвердите удаление")
+        alertDialog.setMessage("Также будут удалены все записи в календаре, связанные с этим врачом")
+
+        // Setting Icon to Dialog
+        //alertDialog.setIcon(R.drawable.delete)
+
+        alertDialog.setPositiveButton("Да", { _, _ ->
+            //Toast.makeText(context, "Вы нажали Да", Toast.LENGTH_SHORT).show()
+            deleteDoctor(id)
+        })
+
+        alertDialog.setNegativeButton("Нет", { dialog, _ ->
+            //Toast.makeText(context, "Вы нажали Нет", Toast.LENGTH_SHORT).show()
+            dialog.cancel()
+        })
+
+        // Showing Alert Message
+        alertDialog.show()
     }
 
     private fun deleteDoctor(id: Long){
@@ -97,6 +128,8 @@ class FragmentDoctors : Fragment() {
 
         database.delete(DatabaseContract.DoctorsColumns.TABLE_NAME,
                 DatabaseContract.DoctorsColumns._ID  +  "=" + id, null)
+        database.delete(DatabaseContract.EventsColumns.TABLE_NAME,
+                DatabaseContract.EventsColumns.DOCTOR_ID  +  "=" + id, null)
         showDBdata()
     }
 
