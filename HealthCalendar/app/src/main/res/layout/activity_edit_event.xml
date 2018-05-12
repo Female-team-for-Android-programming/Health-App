@@ -156,6 +156,7 @@
                 android:layout_marginTop="30dp"
                 android:background="@color/colorAccent"
                 android:text="Готово"
+                android:focusableInTouchMode="true"
                 android:textColor="#FFFFFF" />
         </LinearLayout>
     </ScrollView>
