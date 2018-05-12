@@ -38,6 +38,7 @@ public class DbHelper  extends SQLiteOpenHelper {
                 + DatabaseContract.EventsColumns.DOCTOR_ID + " TEXT NOT NULL, "
                 + DatabaseContract.EventsColumns.DATE + " TEXT NOT NULL, "
                 + DatabaseContract.EventsColumns.TIME + " TEXT, "
+                + DatabaseContract.EventsColumns.VISITED + " INTEGER, "
                 + DatabaseContract.EventsColumns.COMMENT + " TEXT);";
         db.execSQL(SQL);
     }

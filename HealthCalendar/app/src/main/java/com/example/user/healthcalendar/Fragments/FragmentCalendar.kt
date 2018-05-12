@@ -255,6 +255,7 @@ class FragmentCalendar : Fragment() {
             val doctorIdIndex: Int = cursor.getColumnIndex(DatabaseContract.EventsColumns.DOCTOR_ID)
             val dateIndex: Int = cursor.getColumnIndex(DatabaseContract.EventsColumns.DATE)
             val timeIndex: Int = cursor.getColumnIndex(DatabaseContract.EventsColumns.TIME)
+            val visitedIndex: Int = cursor.getColumnIndex(DatabaseContract.EventsColumns.VISITED)
             val commentIndex: Int = cursor.getColumnIndex(DatabaseContract.EventsColumns.COMMENT)
 
             do{
@@ -264,6 +265,7 @@ class FragmentCalendar : Fragment() {
                 val doctor = getDoctor(doctorId.toInt())
                 val date = cursor.getString(dateIndex)
                 val time = cursor.getString(timeIndex)
+                val visited = cursor.getInt(visitedIndex)
                 val comment = cursor.getString(commentIndex)
 
                 ans = ans + "ID = " + id + "\n" +
@@ -277,12 +279,18 @@ class FragmentCalendar : Fragment() {
                     ans = ans + "Комментарий: " + comment + "\n"
                 }
 
+                if (visited == 0)
+                    ans = ans + "Не посещен\n"
+                else
+                    ans = ans + "Посещен\n"
+
                 ans += "\n"
 
                 Log.i("mLog", "ID = " + id
                         + ", doctorId = " + doctorId
                         + ", date = " + date
                         + ", time = " + time
+                        + ", visited = " + visited
                         + ", comment = " + comment)
 
             } while (cursor.moveToNext())

@@ -261,6 +261,7 @@ class EditEventActivity : AppCompatActivity() {
         contentValues.put(DatabaseContract.EventsColumns.DOCTOR_ID, doctor)
         contentValues.put(DatabaseContract.EventsColumns.DATE, date)
         contentValues.put(DatabaseContract.EventsColumns.TIME, time)
+        contentValues.put(DatabaseContract.EventsColumns.VISITED, 0)
         contentValues.put(DatabaseContract.EventsColumns.COMMENT, comment)
 
         database.insert(DatabaseContract.EventsColumns.TABLE_NAME, null, contentValues)
@@ -273,13 +274,15 @@ class EditEventActivity : AppCompatActivity() {
             val doctorIndex = cursor.getColumnIndex(DatabaseContract.EventsColumns.DOCTOR_ID)
             val dateIndex = cursor.getColumnIndex(DatabaseContract.EventsColumns.DATE)
             val timeIndex = cursor.getColumnIndex(DatabaseContract.EventsColumns.TIME)
+            val visitedIndex = cursor.getColumnIndex(DatabaseContract.EventsColumns.VISITED)
             val commentIndex = cursor.getColumnIndex(DatabaseContract.EventsColumns.COMMENT)
 
             do {
-                Log.i("mLog", "ID = " + cursor.getInt(idIndex)
+                Log.i("LOGAN", "ID = " + cursor.getInt(idIndex)
                         + ", doctor = " + cursor.getString(doctorIndex)
                         + ", date = " + cursor.getString(dateIndex)
                         + ", time = " + cursor.getString(timeIndex)
+                        + ", visited = " + cursor.getInt(visitedIndex)
                         + ", comment = " + cursor.getString(commentIndex))
             } while (cursor.moveToNext())
         } else {
