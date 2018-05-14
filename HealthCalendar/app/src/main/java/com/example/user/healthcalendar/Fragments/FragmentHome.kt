@@ -1,5 +1,6 @@
 package com.example.user.healthcalendar.Fragments
 
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.database.Cursor
 import android.net.Uri
@@ -38,7 +39,6 @@ class FragmentHome : Fragment() {
 
     private var cursor : Cursor? = null
     private var dbHelper : DbHelper? = null
-    private var simpleCursorAdapter : SimpleCursorAdapter? = null
 
     private var makeVisited: Button? = null
 
@@ -103,6 +103,7 @@ class FragmentHome : Fragment() {
         }
     }
 
+    @SuppressLint("Recycle")
     private fun makeEventVisited(id: Int){
 
 
@@ -117,28 +118,23 @@ class FragmentHome : Fragment() {
 
         if (cursor!!.moveToFirst()) {
 
-                val idIndex: Int = cursor!!.getColumnIndex(DatabaseContract.EventsColumns._ID)
-                val doctorIdIndex: Int = cursor!!.getColumnIndex(DatabaseContract.EventsColumns.DOCTOR_ID)
-                val dateIndex: Int = cursor!!.getColumnIndex(DatabaseContract.EventsColumns.DATE)
-                val timeIndex: Int = cursor!!.getColumnIndex(DatabaseContract.EventsColumns.TIME)
-                val visitedIndex: Int = cursor!!.getColumnIndex(DatabaseContract.EventsColumns.VISITED)
-                val commentIndex: Int = cursor!!.getColumnIndex(DatabaseContract.EventsColumns.COMMENT)
+                val idIndex: Int = cursor.getColumnIndex(DatabaseContract.EventsColumns._ID)
+                val doctorIdIndex: Int = cursor.getColumnIndex(DatabaseContract.EventsColumns.DOCTOR_ID)
+                val dateIndex: Int = cursor.getColumnIndex(DatabaseContract.EventsColumns.DATE)
+                val timeIndex: Int = cursor.getColumnIndex(DatabaseContract.EventsColumns.TIME)
+                val visitedIndex: Int = cursor.getColumnIndex(DatabaseContract.EventsColumns.VISITED)
+                val commentIndex: Int = cursor.getColumnIndex(DatabaseContract.EventsColumns.COMMENT)
 
                 do{
 
-                    val id = cursor!!.getInt(idIndex)
-                    val doctorId = cursor!!.getString(doctorIdIndex)
-                    val date = cursor!!.getString(dateIndex)
-                    val time = cursor!!.getString(timeIndex)
-                    val visited = cursor!!.getInt(visitedIndex)
-                    val comment = cursor!!.getString(commentIndex)
+                    val id = cursor.getInt(idIndex)
+                    val doctorId = cursor.getString(doctorIdIndex)
+                    val date = cursor.getString(dateIndex)
+                    val time = cursor.getString(timeIndex)
+                    val visited = cursor.getInt(visitedIndex)
+                    val comment = cursor.getString(commentIndex)
 
-                    Log.i("LLLLLL", "ID = " + id
-                            + ", doctorId = " + doctorId
-                            + ", date = " + date
-                            + ", time = " + time
-                            + ", visited = " + visited
-                            + ", comment = " + comment)
+                    Log.i("LLLLLL", """ID = $id, doctorId = $doctorId, date = $date, time = $time, visited = $visited, comment = $comment""")
 
 
                     contentValues.put(DatabaseContract.EventsColumns._ID, id)
@@ -150,7 +146,7 @@ class FragmentHome : Fragment() {
 
                     database.update(DatabaseContract.DoctorsColumns.TABLE_NAME, contentValues,
                             DatabaseContract.DoctorsColumns._ID + "=" + id, null)
-                } while (cursor!!.moveToNext())
+                } while (cursor.moveToNext())
 
             } else {
                 Log.i("mLog", "0 rows")
@@ -160,10 +156,11 @@ class FragmentHome : Fragment() {
     }
 
 
+    @SuppressLint("Recycle")
     private fun getDoctor(id: Int): MutableList<String>{
 
         val database = dbHelper!!.readableDatabase
-        var ans :MutableList<String> = mutableListOf()
+        val ans :MutableList<String> = mutableListOf()
 
         val query = "SELECT * FROM " + DatabaseContract.DoctorsColumns.TABLE_NAME +
                 " WHERE " + DatabaseContract.DoctorsColumns._ID + "='" + id + "'"
@@ -220,19 +217,13 @@ class FragmentHome : Fragment() {
     }
 
 
+    @SuppressLint("Recycle")
     private fun showDBdata() {
 
         val date : String = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date())
         Log.i("CURRENT DATE", date)
 
         val database = dbHelper!!.readableDatabase
-        val doctorSpecialities : MutableList<String> = mutableListOf()
-        val doctorNames : MutableList<String> = mutableListOf()
-        val doctorSurnames : MutableList<String> = mutableListOf()
-        val doctorFathersnames : MutableList<String> = mutableListOf()
-        val doctorAddresses : MutableList<String> = mutableListOf()
-        val doctorContacts : MutableList<String> = mutableListOf()
-        val doctorComments : MutableList<String> = mutableListOf()
 
         //TODO: show only today's events
 
@@ -251,61 +242,24 @@ class FragmentHome : Fragment() {
         else {
             if (cursor!!.moveToFirst()) {
 
-                val idIndex: Int = cursor!!.getColumnIndex(DatabaseContract.EventsColumns._ID)
-                val doctorIdIndex: Int = cursor!!.getColumnIndex(DatabaseContract.EventsColumns.DOCTOR_ID)
-                val dateIndex: Int = cursor!!.getColumnIndex(DatabaseContract.EventsColumns.DATE)
-                val timeIndex: Int = cursor!!.getColumnIndex(DatabaseContract.EventsColumns.TIME)
-                val visitedIndex: Int = cursor!!.getColumnIndex(DatabaseContract.EventsColumns.VISITED)
-                val commentIndex: Int = cursor!!.getColumnIndex(DatabaseContract.EventsColumns.COMMENT)
+                val idIndex: Int = cursor.getColumnIndex(DatabaseContract.EventsColumns._ID)
+                val doctorIdIndex: Int = cursor.getColumnIndex(DatabaseContract.EventsColumns.DOCTOR_ID)
+                val dateIndex: Int = cursor.getColumnIndex(DatabaseContract.EventsColumns.DATE)
+                val timeIndex: Int = cursor.getColumnIndex(DatabaseContract.EventsColumns.TIME)
+                val visitedIndex: Int = cursor.getColumnIndex(DatabaseContract.EventsColumns.VISITED)
+                val commentIndex: Int = cursor.getColumnIndex(DatabaseContract.EventsColumns.COMMENT)
 
                 do{
 
                     val id = cursor.getInt(idIndex)
                     val doctorId = cursor.getString(doctorIdIndex)
                     val doctor = getDoctor(doctorId.toInt())
-                    val date = cursor.getString(dateIndex)
+                    val eventDate = cursor.getString(dateIndex)
                     val time = cursor.getString(timeIndex)
                     val visited = cursor.getInt(visitedIndex)
                     val comment = cursor.getString(commentIndex)
 
-
-                   /* val curEventId = mutableMapOf<String, String>()
-                    val curEventTime = mutableMapOf<String, String>()
-                    val curEventSpeciality = mutableMapOf<String, String>()
-                    val curEventName = mutableMapOf<String, String>()
-                    val curEventSurname = mutableMapOf<String, String>()
-                    val curEventFathersname = mutableMapOf<String, String>()
-                    val curEventAddress = mutableMapOf<String, String>()
-                    val curEventContacts = mutableMapOf<String, String>()
-                    val curEventCommentDoctor = mutableMapOf<String, String>()
-                    val curEventCommentEvent = mutableMapOf<String, String>()
-
-
-                    curEventId[DatabaseContract.EventsColumns._ID] = id.toString()
-                    curEventTime[DatabaseContract.EventsColumns.TIME] = time.toString()
-                    curEventSpeciality["speciality"] = doctor[1]
-                    curEventName["name"] = doctor[2]
-                    curEventSurname["surname"] = doctor[3]
-                    curEventFathersname["fathersname"] = doctor[4]
-                    curEventAddress["address"] = doctor[5]
-                    curEventContacts["contacts"] = doctor[6]
-                    curEventCommentDoctor["comment_doctor"] = doctor[7]
-                    curEventCommentEvent[DatabaseContract.EventsColumns.COMMENT] = comment.toString()
-
-                    events.add(curEventId)
-                    events.add(curEventTime)
-                    events.add(curEventSpeciality)
-                    events.add(curEventName)
-                    events.add(curEventSurname)
-                    events.add(curEventFathersname)
-                    events.add(curEventAddress)
-                    events.add(curEventContacts)
-                    events.add(curEventCommentDoctor)
-                    events.add(curEventCommentEvent)
-                    */
-
                     val currEvent  = mutableMapOf<String, String>()
-
 
                     currEvent[DatabaseContract.EventsColumns._ID] = id.toString()
                     currEvent[DatabaseContract.EventsColumns.TIME] = time.toString()
@@ -327,7 +281,7 @@ class FragmentHome : Fragment() {
 
                     Log.i("LLLLLL", "ID = " + id
                             + ", doctorId = " + doctorId
-                            + ", date = " + date
+                            + ", date = " + eventDate
                             + ", time = " + time
                             + ", visited = " + visited
                             + ", comment = " + comment
