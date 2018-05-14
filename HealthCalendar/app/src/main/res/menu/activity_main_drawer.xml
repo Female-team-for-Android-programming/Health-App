@@ -19,18 +19,22 @@
         <item
             android:id="@+id/nav_meds"
             android:icon="@drawable/ic_menu_meds"
+            android:enabled="false"
             android:title="Лекарства" />
         <item
             android:id="@+id/nav_exam"
             android:icon="@drawable/ic_menu_exam"
+            android:enabled="false"
             android:title="Обследования" />
         <item
             android:id="@+id/nav_journal"
             android:icon="@drawable/ic_menu_journal"
+            android:enabled="false"
             android:title="Журнал самочувствия" />
         <item
             android:id="@+id/nav_manage"
             android:icon="@drawable/ic_menu_settings"
+            android:enabled="false"
             android:title="Настройки" />
     </group>
 
