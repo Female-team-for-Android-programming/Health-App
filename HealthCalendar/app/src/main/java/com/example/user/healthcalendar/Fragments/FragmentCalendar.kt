@@ -1,5 +1,7 @@
 package com.example.user.healthcalendar.Fragments
 
+import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Intent
 import android.database.Cursor
 import android.net.Uri
@@ -11,6 +13,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import com.applandeo.materialcalendarview.CalendarView
 import com.applandeo.materialcalendarview.EventDay
@@ -18,6 +21,7 @@ import com.applandeo.materialcalendarview.utils.DateUtils.getCalendar
 import com.example.user.healthcalendar.Database.DatabaseContract
 import com.example.user.healthcalendar.Database.DbHelper
 import com.example.user.healthcalendar.EditEventActivity
+//import com.example.user.healthcalendar.EventsListActivity
 
 import com.example.user.healthcalendar.R
 import java.text.SimpleDateFormat
@@ -42,6 +46,7 @@ class FragmentCalendar : Fragment() {
 
     var calendarView : CalendarView? = null
     var calendarTextView : TextView? = null
+    var calendarButton : Button? = null
 
     private var cursor : Cursor? = null
     private var dbHelper : DbHelper? = null
@@ -73,14 +78,42 @@ class FragmentCalendar : Fragment() {
         previewNote(EventDay(getCalendar()))
 
         calendarTextView = view!!.findViewById(R.id.calendarTextView)
-        calendarTextView?.movementMethod = ScrollingMovementMethod()
+        //calendarTextView?.movementMethod = ScrollingMovementMethod()
+
+        calendarButton = view!!.findViewById(R.id.calendarSeeEventsButton)
 
         calendarView?.setOnDayClickListener({ eventDay ->
             previewNote(eventDay)
+            calendarButton?.setOnClickListener({
+                showEventsAlert(parserCalendarTime(eventDay.calendar.time.toString()))
+                //goToEventsListActivity(parserCalendarTime(eventDay.calendar.time.toString()))
+            })
         })
 
         showEvents()
     }
+
+    private fun showEventsAlert(date: String) {
+        val message = getDBdata(date)
+        val alertDialog = AlertDialog.Builder(context)
+
+        alertDialog.setTitle("Записи")
+        alertDialog.setMessage(message)
+
+        // Setting Icon to Dialog
+        //alertDialog.setIcon(R.drawable.delete)
+
+        alertDialog.setNeutralButton("OK", { dialog, _ ->
+            dialog.cancel()
+        })
+        alertDialog.show()
+    }
+
+    /*private fun goToEventsListActivity(date: String) {
+        val intent = Intent(activity, EventsListActivity::class.java)
+        intent.putExtra("date", date)
+        startActivity(intent)
+    }*/
 
     private fun showEvents() {
         val eventDays: MutableList<EventDay>? = mutableListOf()
@@ -172,13 +205,24 @@ class FragmentCalendar : Fragment() {
         val dateString : String = eventDay.calendar.time.toString()
         val s = parserCalendarTime(dateString)
 
-        Log.i("mmmmmm",s)
+        var messageToShow = s + "\n"
 
-        val data = getDBdata(s)
+        val database = dbHelper!!.readableDatabase
+        val query = "SELECT * FROM " + DatabaseContract.EventsColumns.TABLE_NAME +
+                " WHERE " + DatabaseContract.EventsColumns.DATE + "='" + s + "'"
+        val cursor : Cursor = database.rawQuery(query, null)
+        if (cursor.count == 0) {
+            messageToShow += "Нет записей"
+            calendarButton?.visibility = View.GONE
+        } else {
+            messageToShow += "Количество записей: " + cursor.count
+            calendarButton?.visibility = View.VISIBLE
+        }
+        //Log.i("mmmmmm",s)
+        //val data = getDBdata(s)
+        //Log.i("DBDBDB",data)
 
-        Log.i("DBDBDB",data)
-
-        calendarTextView?.text = data
+        calendarTextView?.text = messageToShow
     }
 
     private fun getDoctor(id: Int): String{

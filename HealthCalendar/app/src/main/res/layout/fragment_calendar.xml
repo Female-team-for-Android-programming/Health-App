@@ -15,19 +15,43 @@
         app:abbreviationsBarColor="@color/colorStartGradient"
         app:todayLabelColor="@color/colorAccent" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxHeight="100dp"
+        android:scrollbars="vertical"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/calendarView">
+        <TextView
+            android:id="@+id/calendarTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Выберите дату"
+            android:textSize="18sp"/>
+        <Button
+            android:id="@+id/calendarSeeEventsButton"
+            android:layout_width="160dp"
+            android:layout_height="36dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/colorAccent"
+            android:text="Посмотреть"
+            android:textColor="#FFFFFF"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent" />
+    </LinearLayout>
 
-    <TextView
+    <!--<TextView
         android:id="@+id/calendarTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:maxHeight="200dp"
+        android:maxHeight="100dp"
         android:scrollbars="vertical"
         android:text="Выберите дату"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/calendarView" />
+        app:layout_constraintTop_toBottomOf="@id/calendarView" />-->
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_calendar"
@@ -46,5 +70,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.982" />
+
 
 </android.support.constraint.ConstraintLayout>
