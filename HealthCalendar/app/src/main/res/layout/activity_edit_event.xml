@@ -142,7 +142,7 @@
                     android:layout_weight="1.4"
                     android:background="#F5F2F6"
                     android:hint="Комментарий"
-                    android:imeOptions="actionNext"
+                    android:imeOptions="actionDone"
                     android:inputType="text"
                     android:paddingLeft="10dp"
                     android:singleLine="true"
@@ -156,10 +156,8 @@
                 android:layout_marginTop="30dp"
                 android:background="@color/colorAccent"
                 android:text="Готово"
-                android:focusableInTouchMode="true"
                 android:textColor="#FFFFFF" />
         </LinearLayout>
     </ScrollView>
-
 
 </LinearLayout>
