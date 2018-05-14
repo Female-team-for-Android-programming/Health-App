@@ -1,5 +1,6 @@
 package com.example.user.healthcalendar.Fragments
 
+import android.content.ContentValues
 import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
@@ -39,6 +40,8 @@ class FragmentHome : Fragment() {
     private var dbHelper : DbHelper? = null
     private var simpleCursorAdapter : SimpleCursorAdapter? = null
 
+    private var makeVisited: Button? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
@@ -59,6 +62,10 @@ class FragmentHome : Fragment() {
 
         eventsListView = view?.findViewById(R.id.home_listview)
         eventsEmpty = view?.findViewById(R.id.home_list_empty_textview)
+
+        makeVisited = view?.findViewById(R.id.visited_event)
+
+
 
         showDBdata()
 
@@ -96,14 +103,62 @@ class FragmentHome : Fragment() {
         }
     }
 
-    private fun makeEventVisited(id: Long){
+    private fun makeEventVisited(id: Int){
+
+
+        val database = dbHelper!!.writableDatabase
+
+        val contentValues = ContentValues()
+
+        val query = "SELECT * FROM " + DatabaseContract.EventsColumns.TABLE_NAME +
+                " WHERE " + DatabaseContract.EventsColumns._ID + "='" + id + "'"
+
+        val cursor = database.rawQuery(query, null)
+
+        if (cursor!!.moveToFirst()) {
+
+                val idIndex: Int = cursor!!.getColumnIndex(DatabaseContract.EventsColumns._ID)
+                val doctorIdIndex: Int = cursor!!.getColumnIndex(DatabaseContract.EventsColumns.DOCTOR_ID)
+                val dateIndex: Int = cursor!!.getColumnIndex(DatabaseContract.EventsColumns.DATE)
+                val timeIndex: Int = cursor!!.getColumnIndex(DatabaseContract.EventsColumns.TIME)
+                val visitedIndex: Int = cursor!!.getColumnIndex(DatabaseContract.EventsColumns.VISITED)
+                val commentIndex: Int = cursor!!.getColumnIndex(DatabaseContract.EventsColumns.COMMENT)
+
+                do{
+
+                    val id = cursor!!.getInt(idIndex)
+                    val doctorId = cursor!!.getString(doctorIdIndex)
+                    val date = cursor!!.getString(dateIndex)
+                    val time = cursor!!.getString(timeIndex)
+                    val visited = cursor!!.getInt(visitedIndex)
+                    val comment = cursor!!.getString(commentIndex)
+
+                    Log.i("LLLLLL", "ID = " + id
+                            + ", doctorId = " + doctorId
+                            + ", date = " + date
+                            + ", time = " + time
+                            + ", visited = " + visited
+                            + ", comment = " + comment)
+
+
+                    contentValues.put(DatabaseContract.EventsColumns._ID, id)
+                    contentValues.put(DatabaseContract.EventsColumns.DOCTOR_ID, doctorId)
+                    contentValues.put(DatabaseContract.EventsColumns.DATE, date)
+                    contentValues.put(DatabaseContract.EventsColumns.TIME, time)
+                    contentValues.put(DatabaseContract.EventsColumns.VISITED, 1)
+                    contentValues.put(DatabaseContract.EventsColumns.COMMENT, comment)
+
+                    database.update(DatabaseContract.DoctorsColumns.TABLE_NAME, contentValues,
+                            DatabaseContract.DoctorsColumns._ID + "=" + id, null)
+                } while (cursor!!.moveToNext())
+
+            } else {
+                Log.i("mLog", "0 rows")
+            }
 
         showDBdata()
     }
 
-    private fun getTodayEvents(){
-
-    }
 
     private fun getDoctor(id: Int): MutableList<String>{
 
@@ -186,6 +241,8 @@ class FragmentHome : Fragment() {
 
         val cursor = database.rawQuery(query, null)
 
+        val events = mutableListOf<Map<String, String>>()
+
         if (cursor?.count == 0) {
 
             eventsListView?.visibility = View.GONE
@@ -203,21 +260,69 @@ class FragmentHome : Fragment() {
 
                 do{
 
-                    val id = cursor!!.getInt(idIndex)
-                    val doctorId = cursor!!.getString(doctorIdIndex)
+                    val id = cursor.getInt(idIndex)
+                    val doctorId = cursor.getString(doctorIdIndex)
                     val doctor = getDoctor(doctorId.toInt())
-                    val date = cursor!!.getString(dateIndex)
-                    val time = cursor!!.getString(timeIndex)
-                    val visited = cursor!!.getInt(visitedIndex)
-                    val comment = cursor!!.getString(commentIndex)
+                    val date = cursor.getString(dateIndex)
+                    val time = cursor.getString(timeIndex)
+                    val visited = cursor.getInt(visitedIndex)
+                    val comment = cursor.getString(commentIndex)
 
-                    doctorSpecialities.add(doctor[1])
-                    doctorNames.add(doctor[2])
-                    doctorSurnames.add(doctor[3])
-                    doctorFathersnames.add(doctor[4])
-                    doctorAddresses.add(doctor[5])
-                    doctorContacts.add(doctor[6])
-                    doctorComments.add(doctor[7])
+
+                   /* val curEventId = mutableMapOf<String, String>()
+                    val curEventTime = mutableMapOf<String, String>()
+                    val curEventSpeciality = mutableMapOf<String, String>()
+                    val curEventName = mutableMapOf<String, String>()
+                    val curEventSurname = mutableMapOf<String, String>()
+                    val curEventFathersname = mutableMapOf<String, String>()
+                    val curEventAddress = mutableMapOf<String, String>()
+                    val curEventContacts = mutableMapOf<String, String>()
+                    val curEventCommentDoctor = mutableMapOf<String, String>()
+                    val curEventCommentEvent = mutableMapOf<String, String>()
+
+
+                    curEventId[DatabaseContract.EventsColumns._ID] = id.toString()
+                    curEventTime[DatabaseContract.EventsColumns.TIME] = time.toString()
+                    curEventSpeciality["speciality"] = doctor[1]
+                    curEventName["name"] = doctor[2]
+                    curEventSurname["surname"] = doctor[3]
+                    curEventFathersname["fathersname"] = doctor[4]
+                    curEventAddress["address"] = doctor[5]
+                    curEventContacts["contacts"] = doctor[6]
+                    curEventCommentDoctor["comment_doctor"] = doctor[7]
+                    curEventCommentEvent[DatabaseContract.EventsColumns.COMMENT] = comment.toString()
+
+                    events.add(curEventId)
+                    events.add(curEventTime)
+                    events.add(curEventSpeciality)
+                    events.add(curEventName)
+                    events.add(curEventSurname)
+                    events.add(curEventFathersname)
+                    events.add(curEventAddress)
+                    events.add(curEventContacts)
+                    events.add(curEventCommentDoctor)
+                    events.add(curEventCommentEvent)
+                    */
+
+                    val currEvent  = mutableMapOf<String, String>()
+
+
+                    currEvent[DatabaseContract.EventsColumns._ID] = id.toString()
+                    currEvent[DatabaseContract.EventsColumns.TIME] = time.toString()
+                    currEvent["speciality"] = doctor[1]
+                    currEvent["name"] = doctor[2]
+                    currEvent["surname"] = doctor[3]
+                    currEvent["fathersname"] = doctor[4]
+                    currEvent["address"] = doctor[5]
+                    currEvent["contacts"] = doctor[6]
+                    currEvent["comment_doctor"] = doctor[7]
+                    currEvent[DatabaseContract.EventsColumns.COMMENT] = comment.toString()
+
+                    events.add(currEvent)
+
+                    makeVisited?.setOnClickListener({
+                        makeEventVisited(id)
+                    })
 
 
                     Log.i("LLLLLL", "ID = " + id
@@ -235,7 +340,7 @@ class FragmentHome : Fragment() {
                             + ", date = " + doctor[6]
                             + ", date = " + doctor[7])
 
-                } while (cursor!!.moveToNext())
+                } while (cursor.moveToNext())
 
             } else {
                 Log.i("mLog", "0 rows")
@@ -246,23 +351,15 @@ class FragmentHome : Fragment() {
             //TODO: show doctor's information
             //TODO: from should be Array<String>
 
-            val from = arrayOf(DatabaseContract.EventsColumns._ID,
+            val from = arrayOf<String>(DatabaseContract.EventsColumns._ID,
                     DatabaseContract.EventsColumns.TIME,
-                    DatabaseContract.EventsColumns.DOCTOR_ID,
-                    DatabaseContract.EventsColumns.DOCTOR_ID,
-                    DatabaseContract.EventsColumns.DOCTOR_ID,
-                    DatabaseContract.EventsColumns.DOCTOR_ID,
-                    DatabaseContract.EventsColumns.DOCTOR_ID,
-                    DatabaseContract.EventsColumns.DOCTOR_ID,
-                    DatabaseContract.EventsColumns.DOCTOR_ID,
-                    /*doctorSpecialities,
-                    doctorNames,
-                    doctorSurnames,
-                    doctorFathersnames,
-                    doctorAddresses,
-                    doctorContacts,
-                    doctorComments,*/
-
+                    "speciality",
+                    "name",
+                    "surname",
+                    "fathersname",
+                    "address",
+                    "contacts",
+                    "comment_doctor",
                     DatabaseContract.EventsColumns.COMMENT)
             val to = intArrayOf(R.id.home_list_item_id,
                     R.id.home_list_item_time,
@@ -275,9 +372,10 @@ class FragmentHome : Fragment() {
                     R.id.home_list_item_comment_doctor,
                     R.id.home_list_item_comment_event)
 
-            simpleCursorAdapter = SimpleCursorAdapter(context, R.layout.fragment_home_list_view_item,
-                    cursor, from, to, SimpleCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER)
-            eventsListView!!.adapter = simpleCursorAdapter
+            val simpleAdapter = SimpleAdapter(context, events, R.layout.fragment_home_list_view_item,
+                    from, to)
+            eventsListView!!.adapter = simpleAdapter
+
         }
     }
 
