@@ -12,6 +12,8 @@ import com.example.user.healthcalendar.Database.DatabaseContract
 import com.example.user.healthcalendar.Database.DbHelper
 
 import com.example.user.healthcalendar.R
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * A simple [Fragment] subclass.
@@ -103,15 +105,86 @@ class FragmentHome : Fragment() {
 
     }
 
+    private fun getDoctor(id: Int): MutableList<String>{
+
+        val database = dbHelper!!.readableDatabase
+        var ans :MutableList<String> = mutableListOf()
+
+        val query = "SELECT * FROM " + DatabaseContract.DoctorsColumns.TABLE_NAME +
+                " WHERE " + DatabaseContract.DoctorsColumns._ID + "='" + id + "'"
+
+        val cursor = database.rawQuery(query, null)
+
+        if (cursor.moveToFirst()) {
+
+            val idIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns._ID)
+            val specialityIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.SPECIALITY)
+            val nameIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.NAME)
+            val surnameIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.SURNAME)
+            val fathersnameIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.FATHERSNAME)
+            val addressIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.ADDRESS)
+            val contactsIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.CONTACTS)
+            val commentIndex : Int = cursor.getColumnIndex(DatabaseContract.DoctorsColumns.COMMENT)
+
+            do{
+
+                val docId = cursor.getInt(idIndex)
+                val speciality = cursor.getString(specialityIndex)
+                val name = cursor.getString(nameIndex)
+                val surname = cursor.getString(surnameIndex)
+                val fathersname = cursor.getString(fathersnameIndex)
+                val address = cursor.getString(addressIndex)
+                val contacts = cursor.getString(contactsIndex)
+                val comment = cursor.getString(commentIndex)
+
+                ans.add(docId.toString())
+                ans.add(speciality)
+                ans.add(name)
+                ans.add(surname)
+                ans.add(fathersname)
+                ans.add(address)
+                ans.add(contacts)
+                ans.add(comment)
+
+                Log.i("mLog", "ID = " + docId
+                        + ", speciality = " + speciality
+                        + ", name = " + name
+                        + ", surname = " + surname
+                        + ", fathersname = " + fathersname
+                        + ", address = " + address
+                        + ", contacts = " + contacts
+                        + ", comment = " + comment)
+
+            } while (cursor.moveToNext())
+
+        } else {
+            Log.i("mLog", "0 rows")
+        }
+
+        return ans
+    }
+
 
     private fun showDBdata() {
 
+        val date : String = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date())
+        Log.i("CURRENT DATE", date)
+
         val database = dbHelper!!.readableDatabase
+        val doctorSpecialities : MutableList<String> = mutableListOf()
+        val doctorNames : MutableList<String> = mutableListOf()
+        val doctorSurnames : MutableList<String> = mutableListOf()
+        val doctorFathersnames : MutableList<String> = mutableListOf()
+        val doctorAddresses : MutableList<String> = mutableListOf()
+        val doctorContacts : MutableList<String> = mutableListOf()
+        val doctorComments : MutableList<String> = mutableListOf()
 
         //TODO: show only today's events
 
-        cursor = database.query(DatabaseContract.EventsColumns.TABLE_NAME, null, null,
-                null, null, null, null)
+        val query = "SELECT * FROM " + DatabaseContract.EventsColumns.TABLE_NAME +
+                " WHERE " + DatabaseContract.EventsColumns.DATE + "='" + date + "'"
+
+        val cursor = database.rawQuery(query, null)
 
         if (cursor?.count == 0) {
 
@@ -132,11 +205,19 @@ class FragmentHome : Fragment() {
 
                     val id = cursor!!.getInt(idIndex)
                     val doctorId = cursor!!.getString(doctorIdIndex)
-                    //val doctor = getDoctor(doctorId.toInt())
+                    val doctor = getDoctor(doctorId.toInt())
                     val date = cursor!!.getString(dateIndex)
                     val time = cursor!!.getString(timeIndex)
                     val visited = cursor!!.getInt(visitedIndex)
                     val comment = cursor!!.getString(commentIndex)
+
+                    doctorSpecialities.add(doctor[1])
+                    doctorNames.add(doctor[2])
+                    doctorSurnames.add(doctor[3])
+                    doctorFathersnames.add(doctor[4])
+                    doctorAddresses.add(doctor[5])
+                    doctorContacts.add(doctor[6])
+                    doctorComments.add(doctor[7])
 
 
                     Log.i("LLLLLL", "ID = " + id
@@ -144,7 +225,15 @@ class FragmentHome : Fragment() {
                             + ", date = " + date
                             + ", time = " + time
                             + ", visited = " + visited
-                            + ", comment = " + comment)
+                            + ", comment = " + comment
+                            + ", date = " + doctor[0]
+                            + ", date = " + doctor[1]
+                            + ", date = " + doctor[2]
+                            + ", date = " + doctor[3]
+                            + ", date = " + doctor[4]
+                            + ", date = " + doctor[5]
+                            + ", date = " + doctor[6]
+                            + ", date = " + doctor[7])
 
                 } while (cursor!!.moveToNext())
 
@@ -155,6 +244,7 @@ class FragmentHome : Fragment() {
             eventsEmpty?.visibility = View.GONE
 
             //TODO: show doctor's information
+            //TODO: from should be Array<String>
 
             val from = arrayOf(DatabaseContract.EventsColumns._ID,
                     DatabaseContract.EventsColumns.TIME,
@@ -165,6 +255,14 @@ class FragmentHome : Fragment() {
                     DatabaseContract.EventsColumns.DOCTOR_ID,
                     DatabaseContract.EventsColumns.DOCTOR_ID,
                     DatabaseContract.EventsColumns.DOCTOR_ID,
+                    /*doctorSpecialities,
+                    doctorNames,
+                    doctorSurnames,
+                    doctorFathersnames,
+                    doctorAddresses,
+                    doctorContacts,
+                    doctorComments,*/
+
                     DatabaseContract.EventsColumns.COMMENT)
             val to = intArrayOf(R.id.home_list_item_id,
                     R.id.home_list_item_time,
