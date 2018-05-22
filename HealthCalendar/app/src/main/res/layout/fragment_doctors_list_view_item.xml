@@ -16,6 +16,7 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -48,7 +49,7 @@
                     android:layout_weight="1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="SPECIALITY : "
+                    android:text="Специальность : "
                     android:textSize="14dp"/>
 
                 <TextView
@@ -71,7 +72,7 @@
                     android:layout_weight="1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="NAME : "
+                    android:text="Имя : "
                     android:textSize="14dp"/>
 
                 <TextView
@@ -94,7 +95,7 @@
                     android:layout_weight="1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="SURNAME : "
+                    android:text="Фамилия : "
                     android:textSize="14dp"/>
 
                 <TextView
@@ -117,7 +118,7 @@
                     android:layout_weight="1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="FATHERSNAME : "
+                    android:text="Отчество : "
                     android:textSize="14dp"/>
 
                 <TextView
@@ -140,7 +141,7 @@
                     android:layout_weight="1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="ADDRESS : "
+                    android:text="Адрес : "
                     android:textSize="14dp"/>
 
                 <TextView
@@ -163,7 +164,7 @@
                     android:layout_weight="1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="CONTACTS : "
+                    android:text="Контакты : "
                     android:textSize="14dp"/>
 
                 <TextView
@@ -186,7 +187,7 @@
                     android:layout_weight="1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="COMMENT : "
+                    android:text="Заметка : "
                     android:textSize="14dp"/>
 
                 <TextView

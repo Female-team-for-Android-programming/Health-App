@@ -16,6 +16,7 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -48,7 +49,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:width="0dp"
-                    android:text="TIME : "
+                    android:text="Время : "
                     android:textSize="14dp" />
 
                 <TextView
@@ -71,7 +72,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:width="0dp"
-                    android:text="SPECIALITY : "
+                    android:text="Врач : "
                     android:textSize="14dp" />
 
                 <TextView
@@ -90,6 +91,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:visibility="invisible"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -113,6 +115,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:visibility="invisible"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -136,6 +139,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:visibility="invisible"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -163,7 +167,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:width="0dp"
-                    android:text="ADDRESS : "
+                    android:text="Адрес : "
                     android:textSize="14dp" />
 
                 <TextView
@@ -186,7 +190,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:width="0dp"
-                    android:text="CONTACTS : "
+                    android:text="Контакты : "
                     android:textSize="14dp" />
 
                 <TextView
@@ -200,6 +204,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -233,7 +238,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:width="0dp"
-                    android:text="COMMENT EVENT: "
+                    android:text="Комментарий: "
                     android:textSize="14dp" />
 
                 <TextView
@@ -243,23 +248,6 @@
                     android:layout_weight="2"
                     android:width="0dp"
                     android:textSize="14dp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/visited_event"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
-                    android:background="@color/colorAccent"
-                    android:focusableInTouchMode="true"
-                    android:text="Посещен"
-                    android:textColor="#FFFFFF" />
 
             </LinearLayout>
 

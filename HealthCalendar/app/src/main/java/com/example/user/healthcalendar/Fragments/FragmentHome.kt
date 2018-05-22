@@ -40,8 +40,6 @@ class FragmentHome : Fragment() {
     private var cursor : Cursor? = null
     private var dbHelper : DbHelper? = null
 
-    private var makeVisited: Button? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
@@ -62,8 +60,6 @@ class FragmentHome : Fragment() {
 
         eventsListView = view?.findViewById(R.id.home_listview)
         eventsEmpty = view?.findViewById(R.id.home_list_empty_textview)
-
-        makeVisited = view?.findViewById(R.id.visited_event)
 
 
 
@@ -274,9 +270,6 @@ class FragmentHome : Fragment() {
 
                     events.add(currEvent)
 
-                    makeVisited?.setOnClickListener({
-                        makeEventVisited(id)
-                    })
 
 
                     Log.i("LLLLLL", "ID = " + id

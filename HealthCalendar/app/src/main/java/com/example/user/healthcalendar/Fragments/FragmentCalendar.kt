@@ -263,7 +263,7 @@ class FragmentCalendar : Fragment() {
                         fathersname + " "
                 if (address != null && address != "") ans = "$ans\nАдрес: $address"
                 if (contacts != null && contacts != "") ans = "$ans\nКонтакты: $contacts"
-                if (comment != null && comment != "") ans= "$ans\nКомментарий: $comment"
+                if (comment != null && comment != "") ans= "$ans\nЗаметка: $comment"
 
                 Log.i("mLog", "ID = " + docId
                         + ", speciality = " + speciality
@@ -312,9 +312,10 @@ class FragmentCalendar : Fragment() {
                 val visited = cursor.getInt(visitedIndex)
                 val comment = cursor.getString(commentIndex)
 
-                ans = ans + "ID = " + id + "\n" +
-                        "Врач = " + doctor + "\n" +
-                        "Дата = " + date + "\n"
+                ans = ans +
+                //+ "ID = " + id + "\n" +
+                        "Врач : " + doctor + "\n" +
+                        "Дата : " + date + "\n"
 
                 if (time != null && time != "") {
                     ans = ans + "Время: " + time + "\n"
@@ -322,6 +323,7 @@ class FragmentCalendar : Fragment() {
                 if (comment != null && comment != "") {
                     ans = ans + "Комментарий: " + comment + "\n"
                 }
+
 
                 if (visited == 0)
                     ans = ans + "Не посещен\n"

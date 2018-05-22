@@ -5,11 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.user.healthcalendar.Fragments.FragmentHome">
+    <TextView
+        android:id="@+id/todayTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Сегодня"
+        android:textColor="@color/colorAccent"
+        android:gravity="center"
+        android:textSize="24sp"/>
 
     <ListView
         android:id="@+id/home_listview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/todayTextView">
     </ListView>
 
     <TextView
@@ -17,6 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Нет запланированных событий на сегодня"
+        app:layout_constraintTop_toBottomOf="@id/todayTextView"
         android:textSize="20dp"/>
 
     <android.support.design.widget.FloatingActionButton
@@ -29,7 +39,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:clickable="true"
-        android:src="@android:drawable/ic_menu_edit"
+        android:tint="#ffffff"
+        android:src="@android:drawable/ic_input_add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.975"
