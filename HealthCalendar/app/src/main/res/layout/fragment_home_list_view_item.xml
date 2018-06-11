@@ -84,7 +84,7 @@
                     android:textSize="14dp" />
 
             </LinearLayout>
-
+            
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -96,11 +96,11 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:width="0dp"
-                    android:text="NAME : "
+                    android:text="SURNAME : "
                     android:textSize="14dp" />
 
                 <TextView
-                    android:id="@+id/home_list_item_name"
+                    android:id="@+id/home_list_item_surname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
@@ -120,11 +120,11 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:width="0dp"
-                    android:text="SURNAME : "
+                    android:text="NAME : "
                     android:textSize="14dp" />
 
                 <TextView
-                    android:id="@+id/home_list_item_surname"
+                    android:id="@+id/home_list_item_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
